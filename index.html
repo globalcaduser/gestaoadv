@@ -1325,6 +1325,59 @@
   </div>
 
   <script>
+async function carregarDashboardSupabase() {
+  if (typeof supabaseClient === "undefined" || !supabaseClient) {
+    console.warn("Supabase não configurado.");
+    return;
+  }
+
+  try {
+    const [geralRes, statusRes, areaRes, respRes] = await Promise.all([
+      supabaseClient.from("jur_dashboard_geral").select("*").single(),
+      supabaseClient.from("jur_dashboard_por_status").select("*"),
+      supabaseClient.from("jur_dashboard_por_area").select("*"),
+      supabaseClient.from("jur_dashboard_por_responsavel").select("*")
+    ]);
+
+    if (geralRes.error) throw geralRes.error;
+    if (statusRes.error) throw statusRes.error;
+    if (areaRes.error) throw areaRes.error;
+    if (respRes.error) throw respRes.error;
+
+    const geral = geralRes.data;
+
+    setText("dashTotal", geral.total_tarefas || 0);
+    setText("dashAberto", geral.em_aberto || 0);
+    setText("dashConcluidas", geral.concluidas || 0);
+    setText("dashVencidas", geral.vencidas || 0);
+    setText("dashRisco", geral.alto_risco || 0);
+    setText("dashValor", formatMoney(geral.valor_total_envolvido || 0));
+
+    renderDashRows("dashStatus", statusRes.data, "status", "total");
+    renderDashRows("dashArea", areaRes.data, "area_juridica", "total");
+    renderDashRows("dashResponsavel", respRes.data, "responsavel", "total");
+function renderDashRows(elementId, rows, labelField, valueField) {
+  const el = byId(elementId);
+  if (!el) return;
+
+  if (!rows || !rows.length) {
+    el.innerHTML = '<div class="empty" style="padding:12px">Sem dados.</div>';
+    return;
+  }
+
+  el.innerHTML = rows.map(function (row) {
+    return ''
+      + '<div class="dash-row">'
+      + '<span>' + escapeHtml(row[labelField] || "—") + '</span>'
+      + '<strong>' + escapeHtml(row[valueField] || 0) + '</strong>'
+      + '</div>';
+  }).join("");
+}
+  } catch (error) {
+    console.error("Erro ao carregar dashboard:", error);
+    showToast("Erro ao carregar dashboard.", "error");
+  }
+}
     const STORAGE_KEY = "FONSECA_GESTAO_JURIDICA_V1";
 
     const DEFAULT_CONFIG = {
@@ -1632,6 +1685,7 @@
       applyConfigToUI();
       renderAll();
       applyPermissions();
+      carregarDashboardSupabase();
     }
 
     function login() {
