@@ -950,7 +950,56 @@
       </aside>
 
       <main>
-        <div class="board-header">
+  <section id="dashboardSection" class="dashboard-section">
+    <div class="dash-card">
+      <span>Total de tarefas</span>
+      <strong id="dashTotal">0</strong>
+    </div>
+
+    <div class="dash-card">
+      <span>Em aberto</span>
+      <strong id="dashAberto">0</strong>
+    </div>
+
+    <div class="dash-card">
+      <span>Concluídas</span>
+      <strong id="dashConcluidas">0</strong>
+    </div>
+
+    <div class="dash-card">
+      <span>Vencidas</span>
+      <strong id="dashVencidas">0</strong>
+    </div>
+
+    <div class="dash-card">
+      <span>Alto risco</span>
+      <strong id="dashRisco">0</strong>
+    </div>
+
+    <div class="dash-card">
+      <span>Valor envolvido</span>
+      <strong id="dashValor">R$ 0,00</strong>
+    </div>
+  </section>
+
+  <section class="dashboard-grid">
+    <div class="panel">
+      <div class="panel-title">Por status</div>
+      <div id="dashStatus"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Por área jurídica</div>
+      <div id="dashArea"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Por responsável</div>
+      <div id="dashResponsavel"></div>
+    </div>
+  </section>
+
+  <div class="board-header">
           <div class="board-title">
             <h2>Quadro Jurídico</h2>
             <p>Arraste cartões entre colunas para atualizar o status</p>
