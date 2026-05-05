@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LexBoard - Gestão Jurídica</title>
+  <title>Fonseca Gestão Jurídica Inteligente</title>
 
   <style>
     :root {
@@ -23,8 +23,28 @@
       --amber:#f5a623;
       --red:#f04040;
       --purple:#9b6bff;
-      --radius:14px;
       --shadow:0 4px 24px rgba(0,0,0,.4);
+      --radius:14px;
+    }
+
+    body.light-mode {
+      --bg:#f4f6fb;
+      --surface:#ffffff;
+      --surface2:#f7f8fc;
+      --surface3:#eef1f8;
+      --border:#d9deeb;
+      --border2:#c7cfdf;
+      --text:#141824;
+      --text2:#3e4963;
+      --text3:#6b7488;
+      --gold:#a77f14;
+      --gold2:#c89c1c;
+      --blue:#2f67d8;
+      --green:#169d61;
+      --amber:#c77c00;
+      --red:#cf2f2f;
+      --purple:#7047d9;
+      --shadow:0 4px 20px rgba(30,40,70,.12);
     }
 
     * {
@@ -39,6 +59,7 @@
       font-family:Arial, Helvetica, sans-serif;
       min-height:100vh;
       overflow:hidden;
+      transition:background .2s,color .2s;
     }
 
     .hidden {
@@ -73,6 +94,7 @@
 
     select option {
       background:var(--surface2);
+      color:var(--text);
     }
 
     textarea {
@@ -178,6 +200,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      min-width:fit-content;
     }
 
     .brand-icon {
@@ -192,9 +215,9 @@
     }
 
     .brand h1 {
-      font-size:22px;
+      font-size:19px;
       color:var(--gold2);
-      line-height:1;
+      line-height:1.08;
     }
 
     .brand p {
@@ -215,13 +238,13 @@
     }
 
     .login-card {
-      width:430px;
+      width:440px;
       max-width:100%;
       background:var(--surface);
       border:1px solid var(--border2);
       border-radius:22px;
       padding:28px;
-      box-shadow:0 18px 70px rgba(0,0,0,.55);
+      box-shadow:var(--shadow);
     }
 
     .login-card .brand {
@@ -616,7 +639,7 @@
       background:var(--surface);
       border:1px solid var(--border2);
       border-radius:20px;
-      box-shadow:0 12px 48px rgba(0,0,0,.6);
+      box-shadow:var(--shadow);
     }
 
     .modal-lg {
@@ -778,7 +801,7 @@
       display:flex;
       align-items:center;
       gap:10px;
-      box-shadow:0 12px 48px rgba(0,0,0,.6);
+      box-shadow:var(--shadow);
     }
 
     .toast.show {
@@ -826,8 +849,8 @@
       <div class="brand">
         <div class="brand-icon">⚖</div>
         <div>
-          <h1>LexBoard</h1>
-          <p>Gestão Jurídica Inteligente</p>
+          <h1>Fonseca Gestão Jurídica Inteligente</h1>
+          <p>Controle jurídico, tarefas e responsáveis</p>
         </div>
       </div>
 
@@ -857,8 +880,8 @@
       <div class="brand">
         <div class="brand-icon">⚖</div>
         <div>
-          <h1 id="appName">LexBoard</h1>
-          <p id="appSubtitle">Gestão Jurídica Inteligente</p>
+          <h1 id="appName">Fonseca Gestão Jurídica Inteligente</h1>
+          <p id="appSubtitle">Controle jurídico, tarefas e responsáveis</p>
         </div>
       </div>
 
@@ -868,6 +891,7 @@
 
       <div class="top-actions">
         <span class="profile-pill" id="profilePill">Usuário</span>
+        <button class="btn btn-secondary btn-sm" id="btnTheme">☀️ Claro</button>
         <button class="btn btn-secondary btn-sm admin-only" id="btnOpenAdmin">⚙ Admin</button>
         <button class="btn btn-secondary btn-sm manager-only" id="btnOpenUsers">👥 Usuários</button>
         <button class="btn btn-primary can-edit" id="btnNewTask">+ Nova tarefa</button>
@@ -1188,11 +1212,12 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "LEXBOARD_GITHUB_FUNCIONAL_V2";
+    const STORAGE_KEY = "FONSECA_GESTAO_JURIDICA_V1";
 
     const DEFAULT_CONFIG = {
-      appName: "LexBoard",
-      appSubtitle: "Gestão Jurídica Inteligente",
+      appName: "Fonseca Gestão Jurídica Inteligente",
+      appSubtitle: "Controle jurídico, tarefas e responsáveis",
+      theme: "dark",
       tipos: [
         { id: "demanda", label: "Demanda jurídica" },
         { id: "tarefa", label: "Tarefa" }
@@ -1244,6 +1269,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       loadDb();
+      applyTheme();
       bindStaticEvents();
       showLogin();
     });
@@ -1255,6 +1281,7 @@
       });
 
       byId("btnLogout").addEventListener("click", logout);
+      byId("btnTheme").addEventListener("click", toggleTheme);
       byId("btnOpenAdmin").addEventListener("click", function () { openModal("adminModal"); });
       byId("btnOpenUsers").addEventListener("click", function () { openModal("usersModal"); });
       byId("btnNewTask").addEventListener("click", newTask);
@@ -1428,6 +1455,10 @@
       const base = clone(DEFAULT_CONFIG);
       const out = Object.assign(base, cfg || {});
 
+      out.appName = out.appName || "Fonseca Gestão Jurídica Inteligente";
+      out.appSubtitle = out.appSubtitle || "Controle jurídico, tarefas e responsáveis";
+      out.theme = out.theme === "light" ? "light" : "dark";
+
       out.tipos = normalizeList(out.tipos, DEFAULT_CONFIG.tipos, false);
       out.areas = normalizeList(out.areas, DEFAULT_CONFIG.areas, false);
       out.status = normalizeList(out.status, DEFAULT_CONFIG.status, true);
@@ -1455,17 +1486,36 @@
       return clean.length ? clean : clone(fallback);
     }
 
+    function applyTheme() {
+      const theme = db && db.config ? db.config.theme : "dark";
+      document.body.classList.toggle("light-mode", theme === "light");
+
+      const btn = byId("btnTheme");
+      if (btn) {
+        btn.textContent = theme === "light" ? "🌙 Escuro" : "☀️ Claro";
+      }
+    }
+
+    function toggleTheme() {
+      db.config.theme = db.config.theme === "light" ? "dark" : "light";
+      saveDb();
+      applyTheme();
+      showToast(db.config.theme === "light" ? "Modo claro ativado." : "Modo escuro ativado.", "info");
+    }
+
     function showLogin() {
       currentUser = null;
       byId("loginScreen").classList.remove("hidden");
       byId("appScreen").classList.add("hidden");
       setInputValue("loginEmail", "");
       setInputValue("loginPassword", "");
+      applyTheme();
     }
 
     function showApp() {
       byId("loginScreen").classList.add("hidden");
       byId("appScreen").classList.remove("hidden");
+      applyTheme();
       applyConfigToUI();
       renderAll();
       applyPermissions();
@@ -1541,6 +1591,7 @@
     function applyConfigToUI() {
       setText("appName", db.config.appName);
       setText("appSubtitle", db.config.appSubtitle);
+      document.title = db.config.appName;
 
       setOptions("filterTipo", db.config.tipos, "Todos");
       setOptions("filterArea", db.config.areas, "Todas");
@@ -1553,6 +1604,8 @@
       setOptions("taskArea", db.config.areas, null);
       setOptions("taskRisco", db.config.riscos, null);
       setResponsavelOptions("taskResponsavel", true);
+
+      applyTheme();
     }
 
     function setOptions(id, items, emptyLabel) {
@@ -2355,8 +2408,8 @@
     }
 
     function saveAdminConfig() {
-      db.config.appName = getInputValue("cfgAppName").trim() || "LexBoard";
-      db.config.appSubtitle = getInputValue("cfgSubtitle").trim() || "Gestão Jurídica Inteligente";
+      db.config.appName = getInputValue("cfgAppName").trim() || "Fonseca Gestão Jurídica Inteligente";
+      db.config.appSubtitle = getInputValue("cfgSubtitle").trim() || "Controle jurídico, tarefas e responsáveis";
       db.config = normalizeConfig(db.config);
 
       saveDb();
@@ -2370,6 +2423,7 @@
 
       localStorage.removeItem(STORAGE_KEY);
       loadDb();
+      applyTheme();
       closeModal("adminModal");
       showLogin();
       showToast("Sistema resetado.", "info");
