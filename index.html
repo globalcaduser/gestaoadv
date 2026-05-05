@@ -8,71 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
-    const SUPABASE_ANON_KEY = "SUA-CHAVE-ANON-PUBLIC";
-
+    const SUPABASE_URL = "https://cwogktstepexbcuxkthq.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3b2drdHN0ZXBleGJjdXhrdGhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwNjM0NzAsImV4cCI6MjA5MjYzOTQ3MH0.Ka0Dt3Gw0RwmArSw768nrgWH9H5IZvy0or8444KRoLM";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   </script>
 
   <style>
-.dashboard-section {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(120px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.dash-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.dash-card span {
-  display: block;
-  font-size: 11px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 6px;
-}
-
-.dash-card strong {
-  font-size: 22px;
-  color: var(--gold2);
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.dash-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-
-.dash-row span {
-  color: var(--text2);
-}
-
-.dash-row strong {
-  color: var(--gold2);
-}
-
-@media (max-width: 1024px) {
-  .dashboard-section,
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
     :root {
       --bg:#0d0f14;
       --surface:#151821;
@@ -440,6 +381,58 @@
     .metric span {
       font-size:11px;
       color:var(--text3);
+    }
+
+    .dashboard-section {
+      display:grid;
+      grid-template-columns:repeat(6, minmax(120px, 1fr));
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .dash-card {
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .dash-card span {
+      display:block;
+      font-size:11px;
+      color:var(--text3);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:6px;
+    }
+
+    .dash-card strong {
+      font-size:22px;
+      color:var(--gold2);
+    }
+
+    .dashboard-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .dash-row {
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+      border-bottom:1px solid var(--border);
+      font-size:13px;
+    }
+
+    .dash-row span {
+      color:var(--text2);
+    }
+
+    .dash-row strong {
+      color:var(--gold2);
     }
 
     .board-header {
@@ -903,7 +896,9 @@
       .grid-2,
       .grid-3,
       .config-row,
-      .config-row.no-color {
+      .config-row.no-color,
+      .dashboard-section,
+      .dashboard-grid {
         grid-template-columns:1fr;
       }
     }
@@ -934,9 +929,9 @@
       <button class="btn btn-primary" style="width:100%" id="btnLogin">Entrar</button>
 
       <div class="login-hint">
-  Acesse com seu usuário e senha cadastrados.
-</div>  
-   </div>
+        Acesse com seu usuário e senha cadastrados.
+      </div>
+    </div>
   </section>
 
   <section id="appScreen" class="hidden">
@@ -1008,56 +1003,56 @@
       </aside>
 
       <main>
-  <section id="dashboardSection" class="dashboard-section">
-    <div class="dash-card">
-      <span>Total de tarefas</span>
-      <strong id="dashTotal">0</strong>
-    </div>
+        <section id="dashboardSection" class="dashboard-section">
+          <div class="dash-card">
+            <span>Total de tarefas</span>
+            <strong id="dashTotal">0</strong>
+          </div>
 
-    <div class="dash-card">
-      <span>Em aberto</span>
-      <strong id="dashAberto">0</strong>
-    </div>
+          <div class="dash-card">
+            <span>Em aberto</span>
+            <strong id="dashAberto">0</strong>
+          </div>
 
-    <div class="dash-card">
-      <span>Concluídas</span>
-      <strong id="dashConcluidas">0</strong>
-    </div>
+          <div class="dash-card">
+            <span>Concluídas</span>
+            <strong id="dashConcluidas">0</strong>
+          </div>
 
-    <div class="dash-card">
-      <span>Vencidas</span>
-      <strong id="dashVencidas">0</strong>
-    </div>
+          <div class="dash-card">
+            <span>Vencidas</span>
+            <strong id="dashVencidas">0</strong>
+          </div>
 
-    <div class="dash-card">
-      <span>Alto risco</span>
-      <strong id="dashRisco">0</strong>
-    </div>
+          <div class="dash-card">
+            <span>Alto risco</span>
+            <strong id="dashRisco">0</strong>
+          </div>
 
-    <div class="dash-card">
-      <span>Valor envolvido</span>
-      <strong id="dashValor">R$ 0,00</strong>
-    </div>
-  </section>
+          <div class="dash-card">
+            <span>Valor envolvido</span>
+            <strong id="dashValor">R$ 0,00</strong>
+          </div>
+        </section>
 
-  <section class="dashboard-grid">
-    <div class="panel">
-      <div class="panel-title">Por status</div>
-      <div id="dashStatus"></div>
-    </div>
+        <section class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-title">Por status</div>
+            <div id="dashStatus"></div>
+          </div>
 
-    <div class="panel">
-      <div class="panel-title">Por área jurídica</div>
-      <div id="dashArea"></div>
-    </div>
+          <div class="panel">
+            <div class="panel-title">Por área jurídica</div>
+            <div id="dashArea"></div>
+          </div>
 
-    <div class="panel">
-      <div class="panel-title">Por responsável</div>
-      <div id="dashResponsavel"></div>
-    </div>
-  </section>
+          <div class="panel">
+            <div class="panel-title">Por responsável</div>
+            <div id="dashResponsavel"></div>
+          </div>
+        </section>
 
-  <div class="board-header">
+        <div class="board-header">
           <div class="board-title">
             <h2>Quadro Jurídico</h2>
             <p>Arraste cartões entre colunas para atualizar o status</p>
@@ -1325,60 +1320,7 @@
   </div>
 
   <script>
-async function carregarDashboardSupabase() {
-  if (typeof supabaseClient === "undefined" || !supabaseClient) {
-    console.warn("Supabase não configurado.");
-    return;
-  }
-
-  try {
-    const [geralRes, statusRes, areaRes, respRes] = await Promise.all([
-      supabaseClient.from("jur_dashboard_geral").select("*").single(),
-      supabaseClient.from("jur_dashboard_por_status").select("*"),
-      supabaseClient.from("jur_dashboard_por_area").select("*"),
-      supabaseClient.from("jur_dashboard_por_responsavel").select("*")
-    ]);
-
-    if (geralRes.error) throw geralRes.error;
-    if (statusRes.error) throw statusRes.error;
-    if (areaRes.error) throw areaRes.error;
-    if (respRes.error) throw respRes.error;
-
-    const geral = geralRes.data;
-
-    setText("dashTotal", geral.total_tarefas || 0);
-    setText("dashAberto", geral.em_aberto || 0);
-    setText("dashConcluidas", geral.concluidas || 0);
-    setText("dashVencidas", geral.vencidas || 0);
-    setText("dashRisco", geral.alto_risco || 0);
-    setText("dashValor", formatMoney(geral.valor_total_envolvido || 0));
-
-    renderDashRows("dashStatus", statusRes.data, "status", "total");
-    renderDashRows("dashArea", areaRes.data, "area_juridica", "total");
-    renderDashRows("dashResponsavel", respRes.data, "responsavel", "total");
-function renderDashRows(elementId, rows, labelField, valueField) {
-  const el = byId(elementId);
-  if (!el) return;
-
-  if (!rows || !rows.length) {
-    el.innerHTML = '<div class="empty" style="padding:12px">Sem dados.</div>';
-    return;
-  }
-
-  el.innerHTML = rows.map(function (row) {
-    return ''
-      + '<div class="dash-row">'
-      + '<span>' + escapeHtml(row[labelField] || "—") + '</span>'
-      + '<strong>' + escapeHtml(row[valueField] || 0) + '</strong>'
-      + '</div>';
-  }).join("");
-}
-  } catch (error) {
-    console.error("Erro ao carregar dashboard:", error);
-    showToast("Erro ao carregar dashboard.", "error");
-  }
-}
-    const STORAGE_KEY = "FONSECA_GESTAO_JURIDICA_V1";
+    const STORAGE_KEY = "FONSECA_GESTAO_JURIDICA_V2";
 
     const DEFAULT_CONFIG = {
       appName: "Fonseca Gestão Jurídica Inteligente",
@@ -1453,11 +1395,11 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       byId("btnNewTask").addEventListener("click", newTask);
       byId("btnClearFilters").addEventListener("click", clearFilters);
 
-      byId("searchInput").addEventListener("input", renderAll);
-      byId("filterTipo").addEventListener("change", renderAll);
-      byId("filterArea").addEventListener("change", renderAll);
-      byId("filterRisco").addEventListener("change", renderAll);
-      byId("filterResponsavel").addEventListener("change", renderAll);
+      byId("searchInput").addEventListener("input", renderAllLocal);
+      byId("filterTipo").addEventListener("change", renderAllLocal);
+      byId("filterArea").addEventListener("change", renderAllLocal);
+      byId("filterRisco").addEventListener("change", renderAllLocal);
+      byId("filterResponsavel").addEventListener("change", renderAllLocal);
 
       byId("btnKanban").addEventListener("click", function () { switchView("kanban"); });
       byId("btnLista").addEventListener("click", function () { switchView("lista"); });
@@ -1501,7 +1443,6 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       const adminId = uid();
       const r1 = uid();
       const r2 = uid();
-      const today = new Date();
 
       return {
         config: clone(DEFAULT_CONFIG),
@@ -1543,36 +1484,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
             createdAt: now()
           }
         ],
-        tasks: [
-          {
-            id: uid(),
-            codigo: "JUR-2026-0001",
-            tipo: "demanda",
-            titulo: "Revisar contrato de prestação de serviços",
-            descricao: "Analisar SLA, multa, reajuste, confidencialidade e rescisão.",
-            area: "contratos",
-            risco: "medio",
-            prioridade: "alta",
-            status: "em_analise",
-            responsavelId: r2,
-            prazo: toISODate(addDays(today, 2)),
-            processo: "",
-            parte: "Fornecedor XPTO",
-            valor: 85000,
-            link: "",
-            checklist: [
-              { text: "Ler minuta", done: true },
-              { text: "Marcar pontos de risco", done: false }
-            ],
-            historico: [
-              { msg: "Criado", userId: adminId, date: now() }
-            ],
-            createdBy: adminId,
-            updatedBy: adminId,
-            createdAt: now(),
-            updatedAt: now()
-          }
-        ]
+        tasks: []
       };
     }
 
@@ -1678,17 +1590,19 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       applyTheme();
     }
 
-    function showApp() {
+    async function showApp() {
       byId("loginScreen").classList.add("hidden");
       byId("appScreen").classList.remove("hidden");
+
       applyTheme();
       applyConfigToUI();
-      renderAll();
+      await carregarTarefasSupabase();
+      renderAllLocal();
       applyPermissions();
-      carregarDashboardSupabase();
+      await carregarDashboardSupabase();
     }
 
-    function login() {
+    async function login() {
       const email = getInputValue("loginEmail").trim().toLowerCase();
       const pass = getInputValue("loginPassword");
 
@@ -1712,7 +1626,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       }
 
       currentUser = user;
-      showApp();
+      await showApp();
       showToast("Login realizado.");
     }
 
@@ -1813,7 +1727,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       }
     }
 
-    function renderAll() {
+    function renderAllLocal() {
       applyConfigToUI();
       renderBoard();
       renderListView();
@@ -1821,6 +1735,171 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       renderUpcoming();
       renderUsersGrid();
       applyPermissions();
+    }
+
+    async function refreshAll() {
+      await carregarTarefasSupabase();
+      renderAllLocal();
+      await carregarDashboardSupabase();
+    }
+
+    async function carregarTarefasSupabase() {
+      if (typeof supabaseClient === "undefined" || !supabaseClient) {
+        console.warn("Supabase não configurado. Usando dados locais.");
+        return;
+      }
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("jur_demandas")
+          .select("*")
+          .order("created_at", { ascending:false });
+
+        if (error) throw error;
+
+        db.tasks = (data || []).map(mapDemandaFromDb);
+        saveDb();
+      } catch (error) {
+        console.error("Erro ao carregar tarefas do Supabase:", error);
+        showToast("Erro ao carregar tarefas do Supabase.", "error");
+      }
+    }
+
+    function mapDemandaFromDb(row) {
+      return {
+        id: row.id,
+        codigo: row.codigo,
+        tipo: row.tipo_registro || "tarefa",
+        titulo: row.titulo || "",
+        descricao: row.descricao || "",
+        area: row.area_juridica || "",
+        risco: row.risco || "medio",
+        prioridade: row.prioridade || "media",
+        status: row.status || "triagem",
+        responsavelId: row.responsavel_id || "",
+        prazo: row.prazo || "",
+        processo: row.numero_processo || "",
+        parte: row.parte_contraria || "",
+        valor: Number(row.valor_envolvido || 0),
+        link: row.link_documento || "",
+        checklist: Array.isArray(row.checklist) ? row.checklist : [],
+        historico: Array.isArray(row.historico) ? row.historico : [],
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      };
+    }
+
+    function mapTaskToDb(payload, historico) {
+      return {
+        tipo_registro: payload.tipo,
+        titulo: payload.titulo,
+        descricao: payload.descricao || null,
+        area_juridica: payload.area || null,
+        risco: payload.risco || "medio",
+        prioridade: payload.prioridade || "media",
+        status: payload.status || "triagem",
+        responsavel_id: isUuid(payload.responsavelId) ? payload.responsavelId : null,
+        prazo: payload.prazo || null,
+        numero_processo: payload.processo || null,
+        parte_contraria: payload.parte || null,
+        valor_envolvido: Number(payload.valor || 0),
+        link_documento: payload.link || null,
+        checklist: payload.checklist || [],
+        historico: historico || [],
+        updated_at: new Date().toISOString()
+      };
+    }
+
+    async function salvarTaskSupabase(payload, id, historico) {
+      const dbPayload = mapTaskToDb(payload, historico);
+
+      if (id && isUuid(id)) {
+        const { error } = await supabaseClient
+          .from("jur_demandas")
+          .update(dbPayload)
+          .eq("id", id);
+
+        if (error) throw error;
+        return id;
+      }
+
+      dbPayload.codigo = nextCode();
+
+      const { data, error } = await supabaseClient
+        .from("jur_demandas")
+        .insert(dbPayload)
+        .select("id")
+        .single();
+
+      if (error) throw error;
+
+      return data.id;
+    }
+
+    async function excluirTaskSupabase(id) {
+      const { error } = await supabaseClient
+        .from("jur_demandas")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+    }
+
+    async function carregarDashboardSupabase() {
+      if (typeof supabaseClient === "undefined" || !supabaseClient) {
+        console.warn("Supabase não configurado.");
+        return;
+      }
+
+      try {
+        const [geralRes, statusRes, areaRes, respRes] = await Promise.all([
+          supabaseClient.from("jur_dashboard_geral").select("*").single(),
+          supabaseClient.from("jur_dashboard_por_status").select("*"),
+          supabaseClient.from("jur_dashboard_por_area").select("*"),
+          supabaseClient.from("jur_dashboard_por_responsavel").select("*")
+        ]);
+
+        if (geralRes.error) throw geralRes.error;
+        if (statusRes.error) throw statusRes.error;
+        if (areaRes.error) throw areaRes.error;
+        if (respRes.error) throw respRes.error;
+
+        const geral = geralRes.data || {};
+
+        setText("dashTotal", geral.total_tarefas || 0);
+        setText("dashAberto", geral.em_aberto || 0);
+        setText("dashConcluidas", geral.concluidas || 0);
+        setText("dashVencidas", geral.vencidas || 0);
+        setText("dashRisco", geral.alto_risco || 0);
+        setText("dashValor", formatMoney(geral.valor_total_envolvido || 0));
+
+        renderDashRows("dashStatus", statusRes.data, "status", "total");
+        renderDashRows("dashArea", areaRes.data, "area_juridica", "total");
+        renderDashRows("dashResponsavel", respRes.data, "responsavel", "total");
+
+        console.log("Dashboard carregado:", geralRes.data);
+      } catch (error) {
+        console.error("Erro ao carregar dashboard:", error);
+        showToast("Erro ao carregar dashboard.", "error");
+      }
+    }
+
+    function renderDashRows(elementId, rows, labelField, valueField) {
+      const el = byId(elementId);
+      if (!el) return;
+
+      if (!rows || !rows.length) {
+        el.innerHTML = '<div class="empty" style="padding:12px">Sem dados.</div>';
+        return;
+      }
+
+      el.innerHTML = rows.map(function (row) {
+        return ''
+          + '<div class="dash-row">'
+          + '<span>' + escapeHtml(row[labelField] || "—") + '</span>'
+          + '<strong>' + escapeHtml(row[valueField] || 0) + '</strong>'
+          + '</div>';
+      }).join("");
     }
 
     function filteredTasks() {
@@ -1832,7 +1911,6 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
       return db.tasks.filter(function (t) {
         const resp = findUser(t.responsavelId);
-        const created = findUser(t.createdBy);
 
         const text = [
           t.codigo,
@@ -1842,8 +1920,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
           t.processo,
           t.parte,
           resp && resp.nome,
-          resp && resp.email,
-          created && created.nome
+          resp && resp.email
         ].join(" ").toLowerCase();
 
         return (!search || text.includes(search))
@@ -1901,7 +1978,6 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
     function renderCard(t) {
       const resp = findUser(t.responsavelId);
-      const created = findUser(t.createdBy);
       const cl = Array.isArray(t.checklist) ? t.checklist : [];
       const done = cl.filter(function (c) { return c.done; }).length;
 
@@ -1921,7 +1997,6 @@ function renderDashRows(elementId, rows, labelField, valueField) {
         + (t.processo ? '<div>📄 ' + escapeHtml(t.processo) + '</div>' : "")
         + (cl.length ? '<div>☑ ' + done + '/' + cl.length + ' checklist</div>' : "")
         + (t.valor ? '<div>💰 ' + formatMoney(t.valor) + '</div>' : "")
-        + '<div>👤 Criado por: ' + escapeHtml(created ? created.nome : "—") + '</div>'
         + '</div>'
         + '<div class="card-footer">'
         + '<div class="resp-label"><span class="avatar" style="background:' + escapeAttr(resp ? resp.cor : "#556080") + '">' + escapeHtml(initials(resp ? resp.nome : "?")) + '</span>' + escapeHtml(resp ? resp.nome : "Sem responsável") + '</div>'
@@ -2108,7 +2183,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       byId("historyBox").innerHTML = "Sem histórico.";
     }
 
-    function saveTask() {
+    async function saveTask() {
       if (!canEditTasks()) {
         showToast("Seu perfil não permite salvar tarefas.", "error");
         return;
@@ -2134,9 +2209,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
         valor: getInputValue("taskValor") ? Number(getInputValue("taskValor")) : 0,
         parte: getInputValue("taskParte").trim(),
         link: getInputValue("taskLink").trim(),
-        checklist: checklistAtual,
-        updatedBy: currentUser.id,
-        updatedAt: now()
+        checklist: checklistAtual
       };
 
       if (!payload.titulo) {
@@ -2144,12 +2217,11 @@ function renderDashRows(elementId, rows, labelField, valueField) {
         return;
       }
 
-      if (id) {
-        const idx = db.tasks.findIndex(function (t) { return t.id === id; });
-        if (idx < 0) return;
+      let historico = [];
 
-        const prev = db.tasks[idx];
-        const historico = Array.isArray(prev.historico) ? prev.historico : [];
+      if (id) {
+        const prev = db.tasks.find(function (t) { return t.id === id; });
+        historico = prev && Array.isArray(prev.historico) ? prev.historico : [];
 
         if (oldStatus && oldStatus !== newStatus) {
           historico.push({
@@ -2167,27 +2239,52 @@ function renderDashRows(elementId, rows, labelField, valueField) {
             date: now()
           });
         }
+      } else {
+        historico = [
+          { msg: "Criado", userId: currentUser.id, date: now() }
+        ];
+      }
 
-        db.tasks[idx] = Object.assign({}, prev, payload, { historico: historico });
+      try {
+        if (typeof supabaseClient !== "undefined" && supabaseClient) {
+          await salvarTaskSupabase(payload, id, historico);
+          await refreshAll();
+        } else {
+          salvarTaskLocal(payload, id, historico);
+          renderAllLocal();
+        }
+
+        closeModal("taskModal");
+        showToast("Tarefa salva.");
+      } catch (error) {
+        console.error("Erro ao salvar tarefa:", error);
+        showToast("Erro ao salvar tarefa no Supabase.", "error");
+      }
+    }
+
+    function salvarTaskLocal(payload, id, historico) {
+      if (id) {
+        const idx = db.tasks.findIndex(function (t) { return t.id === id; });
+        if (idx < 0) return;
+
+        db.tasks[idx] = Object.assign({}, db.tasks[idx], payload, {
+          historico: historico,
+          updatedAt: now()
+        });
       } else {
         db.tasks.unshift(Object.assign({
           id: uid(),
           codigo: nextCode(),
-          historico: [
-            { msg: "Criado", userId: currentUser.id, date: now() }
-          ],
+          historico: historico,
           createdBy: currentUser.id,
           createdAt: now()
         }, payload));
       }
 
       saveDb();
-      closeModal("taskModal");
-      renderAll();
-      showToast("Tarefa salva.");
     }
 
-    function deleteTask() {
+    async function deleteTask() {
       if (!canEditTasks()) {
         showToast("Seu perfil não permite excluir tarefas.", "error");
         return;
@@ -2198,11 +2295,22 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
       if (!confirm("Excluir esta tarefa permanentemente?")) return;
 
-      db.tasks = db.tasks.filter(function (t) { return t.id !== id; });
-      saveDb();
-      closeModal("taskModal");
-      renderAll();
-      showToast("Tarefa excluída.");
+      try {
+        if (typeof supabaseClient !== "undefined" && supabaseClient && isUuid(id)) {
+          await excluirTaskSupabase(id);
+          await refreshAll();
+        } else {
+          db.tasks = db.tasks.filter(function (t) { return t.id !== id; });
+          saveDb();
+          renderAllLocal();
+        }
+
+        closeModal("taskModal");
+        showToast("Tarefa excluída.");
+      } catch (error) {
+        console.error("Erro ao excluir tarefa:", error);
+        showToast("Erro ao excluir tarefa no Supabase.", "error");
+      }
     }
 
     function renderHistory(t) {
@@ -2296,7 +2404,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       event.currentTarget.classList.remove("drag-over");
     }
 
-    function dropCard(event) {
+    async function dropCard(event) {
       if (!canEditTasks()) return;
 
       event.preventDefault();
@@ -2309,10 +2417,8 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       if (!task || !newStatus || task.status === newStatus) return;
 
       const oldStatus = task.status;
-
       task.status = newStatus;
-      task.updatedBy = currentUser.id;
-      task.updatedAt = now();
+
       task.historico = Array.isArray(task.historico) ? task.historico : [];
       task.historico.push({
         msg: "Status: " + labelFrom(db.config.status, oldStatus) + " → " + labelFrom(db.config.status, newStatus),
@@ -2320,9 +2426,30 @@ function renderDashRows(elementId, rows, labelField, valueField) {
         date: now()
       });
 
-      saveDb();
-      renderAll();
-      showToast("Status alterado para " + labelFrom(db.config.status, newStatus) + ".");
+      try {
+        if (typeof supabaseClient !== "undefined" && supabaseClient && isUuid(task.id)) {
+          const { error } = await supabaseClient
+            .from("jur_demandas")
+            .update({
+              status: newStatus,
+              historico: task.historico,
+              updated_at: now()
+            })
+            .eq("id", task.id);
+
+          if (error) throw error;
+
+          await refreshAll();
+        } else {
+          saveDb();
+          renderAllLocal();
+        }
+
+        showToast("Status alterado para " + labelFrom(db.config.status, newStatus) + ".");
+      } catch (error) {
+        console.error("Erro ao alterar status:", error);
+        showToast("Erro ao alterar status no Supabase.", "error");
+      }
     }
 
     function renderUsersGrid() {
@@ -2446,7 +2573,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
       saveDb();
       clearUserForm();
-      renderAll();
+      renderAllLocal();
       showToast("Usuário salvo.");
     }
 
@@ -2472,7 +2599,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       });
 
       saveDb();
-      renderAll();
+      renderAllLocal();
       showToast("Usuário excluído.");
     }
 
@@ -2581,19 +2708,19 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
       saveDb();
       closeModal("adminModal");
-      renderAll();
+      renderAllLocal();
       showToast("Configurações salvas.");
     }
 
     function resetSystem() {
-      if (!confirm("Resetar tudo? Isso apagará usuários, tarefas e configurações deste navegador.")) return;
+      if (!confirm("Resetar dados locais? Isso não apaga o Supabase.")) return;
 
       localStorage.removeItem(STORAGE_KEY);
       loadDb();
       applyTheme();
       closeModal("adminModal");
       showLogin();
-      showToast("Sistema resetado.", "info");
+      showToast("Dados locais resetados.", "info");
     }
 
     function clearFilters() {
@@ -2602,7 +2729,7 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       setSelectValue("filterArea", "");
       setSelectValue("filterRisco", "");
       setSelectValue("filterResponsavel", "");
-      renderAll();
+      renderAllLocal();
     }
 
     function nextCode() {
@@ -2637,27 +2764,22 @@ function renderDashRows(elementId, rows, labelField, valueField) {
     }
 
     function uid() {
+      if (crypto && crypto.randomUUID) return crypto.randomUUID();
       return "id_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+    }
+
+    function isUuid(value) {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
     }
 
     function now() {
       return new Date().toISOString();
     }
 
-    function addDays(date, days) {
-      const d = new Date(date);
-      d.setDate(d.getDate() + days);
-      return d;
-    }
-
-    function toISODate(date) {
-      return date.toISOString().slice(0, 10);
-    }
-
     function formatDate(date) {
       if (!date) return "";
 
-      const p = date.split("-");
+      const p = String(date).split("-");
       return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : date;
     }
 
@@ -2671,8 +2793,8 @@ function renderDashRows(elementId, rows, labelField, valueField) {
 
     function formatMoney(v) {
       return Number(v || 0).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
+        style:"currency",
+        currency:"BRL"
       });
     }
 
@@ -2707,11 +2829,11 @@ function renderDashRows(elementId, rows, labelField, valueField) {
     function escapeHtml(v) {
       return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
         return {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
         }[c];
       });
     }
@@ -2761,6 +2883,8 @@ function renderDashRows(elementId, rows, labelField, valueField) {
       const el = byId("toast");
       const icon = byId("toastIcon");
       const text = byId("toastMsg");
+
+      if (!el || !icon || !text) return;
 
       el.style.borderColor = type === "error" ? "var(--red)" : type === "info" ? "var(--blue)" : "var(--green)";
       icon.textContent = type === "error" ? "✗" : type === "info" ? "ℹ" : "✓";
