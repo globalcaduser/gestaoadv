@@ -5,478 +5,817 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LexBoard - Gestão Jurídica</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --bg: #0d0f14;
-      --surface: #151821;
-      --surface2: #1c2030;
-      --surface3: #222840;
-      --border: #2a3050;
-      --border2: #363f60;
-      --text: #e8ecf8;
-      --text2: #8b95b8;
-      --text3: #556080;
-      --gold: #c9a227;
-      --gold2: #f0c84a;
-      --blue: #4a80f5;
-      --green: #2ecc87;
-      --amber: #f5a623;
-      --red: #f04040;
-      --purple: #9b6bff;
-      --radius: 14px;
-      --shadow: 0 4px 24px rgba(0,0,0,.4);
+      --bg:#0d0f14;
+      --surface:#151821;
+      --surface2:#1c2030;
+      --surface3:#222840;
+      --border:#2a3050;
+      --border2:#363f60;
+      --text:#e8ecf8;
+      --text2:#8b95b8;
+      --text3:#556080;
+      --gold:#c9a227;
+      --gold2:#f0c84a;
+      --blue:#4a80f5;
+      --green:#2ecc87;
+      --amber:#f5a623;
+      --red:#f04040;
+      --purple:#9b6bff;
+      --radius:14px;
+      --shadow:0 4px 24px rgba(0,0,0,.4);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: "DM Sans", sans-serif;
-      min-height: 100vh;
-      overflow: hidden;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
+      min-height:100vh;
+      overflow:hidden;
     }
 
-    .hidden { display: none !important; }
-
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
-
-    header {
-      height: 68px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      gap: 14px;
-      position: relative;
-      z-index: 10;
+    .hidden {
+      display:none !important;
     }
 
-    .brand { display: flex; align-items: center; gap: 12px; min-width: fit-content; }
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-      color: #0d0f14;
-      font-weight: 800;
-    }
-    .brand h1 { font-family: "Playfair Display", serif; font-size: 22px; color: var(--gold2); line-height: 1; }
-    .brand p { font-size: 11px; color: var(--text3); margin-top: 3px; }
-
-    .search-wrap { flex: 1; max-width: 520px; position: relative; }
-    .search-wrap::before {
-      content: "⌕";
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text3);
-      font-size: 18px;
-    }
-    .search {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px 10px 38px;
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
+    button,
+    input,
+    select,
+    textarea {
+      font-family:Arial, Helvetica, sans-serif;
     }
 
-    input:focus, select:focus, textarea:focus, .search:focus { border-color: var(--gold); }
+    input,
+    select,
+    textarea {
+      width:100%;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:10px 12px;
+      color:var(--text);
+      font-size:13px;
+      outline:none;
+    }
 
-    .top-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color:var(--gold);
+    }
+
+    select option {
+      background:var(--surface2);
+    }
+
+    textarea {
+      min-height:82px;
+      resize:vertical;
+    }
+
+    label {
+      display:block;
+      font-size:11px;
+      font-weight:700;
+      color:var(--text3);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-bottom:6px;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+
+    th {
+      padding:10px 12px;
+      text-align:left;
+      color:var(--text3);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      border-bottom:1px solid var(--border);
+    }
+
+    td {
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+      color:var(--text2);
+      vertical-align:middle;
+    }
+
+    .field {
+      margin-bottom:12px;
+    }
 
     .btn {
-      border: none;
-      border-radius: 8px;
-      padding: 9px 14px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      font-family: "DM Sans", sans-serif;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-      transition: .15s;
+      border:0;
+      border-radius:8px;
+      padding:9px 14px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      white-space:nowrap;
+      transition:.15s;
     }
-    .btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #0d0f14; }
-    .btn-primary:hover:not(:disabled) { opacity: .9; transform: translateY(-1px); }
-    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
-    .btn-secondary:hover:not(:disabled) { background: var(--surface3); color: var(--text); }
-    .btn-danger { background: rgba(240,64,64,.15); color: var(--red); border: 1px solid rgba(240,64,64,.35); }
-    .btn-ghost { background: transparent; color: var(--text3); border: 1px solid transparent; }
-    .btn-ghost:hover:not(:disabled) { color: var(--text); background: var(--surface2); }
-    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
-    .btn-xs { padding: 4px 8px; font-size: 11px; border-radius: 5px; }
+
+    .btn:hover {
+      transform:translateY(-1px);
+    }
+
+    .btn-primary {
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#0d0f14;
+    }
+
+    .btn-secondary {
+      background:var(--surface2);
+      color:var(--text2);
+      border:1px solid var(--border);
+    }
+
+    .btn-danger {
+      background:rgba(240,64,64,.14);
+      color:var(--red);
+      border:1px solid rgba(240,64,64,.35);
+    }
+
+    .btn-ghost {
+      background:transparent;
+      color:var(--text3);
+      border:1px solid transparent;
+    }
+
+    .btn-ghost:hover {
+      background:var(--surface2);
+      color:var(--text);
+    }
+
+    .btn-sm {
+      padding:6px 10px;
+      font-size:12px;
+    }
+
+    .btn-xs {
+      padding:4px 8px;
+      font-size:11px;
+    }
+
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-icon {
+      width:38px;
+      height:38px;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      color:#0d0f14;
+      font-weight:800;
+    }
+
+    .brand h1 {
+      font-size:22px;
+      color:var(--gold2);
+      line-height:1;
+    }
+
+    .brand p {
+      font-size:11px;
+      color:var(--text3);
+      margin-top:3px;
+    }
+
+    .login-screen {
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at top left,rgba(201,162,39,.16),transparent 36%),
+        radial-gradient(circle at bottom right,rgba(74,128,245,.13),transparent 32%),
+        var(--bg);
+    }
+
+    .login-card {
+      width:430px;
+      max-width:100%;
+      background:var(--surface);
+      border:1px solid var(--border2);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:0 18px 70px rgba(0,0,0,.55);
+    }
+
+    .login-card .brand {
+      margin-bottom:22px;
+    }
+
+    .login-hint {
+      font-size:12px;
+      color:var(--text3);
+      line-height:1.65;
+      margin-top:12px;
+    }
+
+    header {
+      height:68px;
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      gap:14px;
+      position:relative;
+      z-index:10;
+    }
+
+    .search-wrap {
+      flex:1;
+      max-width:520px;
+      position:relative;
+    }
+
+    .search-wrap:before {
+      content:"⌕";
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--text3);
+      font-size:18px;
+    }
+
+    .search {
+      padding-left:38px;
+    }
+
+    .top-actions {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .profile-pill {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:6px 10px;
+      color:var(--text2);
+      font-size:12px;
+    }
 
     .layout {
-      height: calc(100vh - 68px);
-      display: grid;
-      grid-template-columns: 270px 1fr;
-      overflow: hidden;
+      height:calc(100vh - 68px);
+      display:grid;
+      grid-template-columns:270px 1fr;
+      overflow:hidden;
     }
 
     aside {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 16px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      background:var(--surface);
+      border-right:1px solid var(--border);
+      padding:16px;
+      overflow-y:auto;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
 
-    .panel { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-    .panel-title { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
-
-    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .metric { background: var(--surface3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 10px; }
-    .metric strong { display: block; font-size: 26px; font-family: "Playfair Display", serif; margin-bottom: 4px; color: var(--gold2); }
-    .metric span { font-size: 11px; color: var(--text3); }
-
-    .field { margin-bottom: 12px; }
-    label { display: block; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-    input, select, textarea {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      color: var(--text);
-      font-size: 13px;
-      font-family: "DM Sans", sans-serif;
-      outline: none;
+    main {
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
     }
-    select option { background: var(--surface2); }
-    textarea { min-height: 80px; resize: vertical; }
 
-    main { padding: 16px; display: flex; flex-direction: column; overflow: hidden; }
+    .panel {
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:14px;
+    }
 
-    .board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; }
-    .board-title h2 { font-family: "Playfair Display", serif; font-size: 26px; color: var(--text); }
-    .board-title p { font-size: 12px; color: var(--text3); margin-top: 3px; }
+    .panel-title {
+      font-size:10px;
+      font-weight:800;
+      color:var(--text3);
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      margin-bottom:12px;
+    }
+
+    .metric-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .metric {
+      background:var(--surface3);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:12px 10px;
+    }
+
+    .metric strong {
+      display:block;
+      font-size:26px;
+      margin-bottom:4px;
+      color:var(--gold2);
+    }
+
+    .metric span {
+      font-size:11px;
+      color:var(--text3);
+    }
+
+    .board-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+      gap:12px;
+    }
+
+    .board-title h2 {
+      font-size:26px;
+    }
+
+    .board-title p {
+      font-size:12px;
+      color:var(--text3);
+      margin-top:3px;
+    }
 
     .view-tabs {
-      display: flex;
-      gap: 4px;
-      background: var(--surface2);
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      display:flex;
+      gap:4px;
+      background:var(--surface2);
+      padding:4px;
+      border-radius:8px;
+      border:1px solid var(--border);
     }
+
     .tab-btn {
-      padding: 6px 14px;
-      border-radius: 5px;
-      border: none;
-      background: transparent;
-      color: var(--text3);
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: "DM Sans", sans-serif;
+      padding:6px 14px;
+      border-radius:5px;
+      border:0;
+      background:transparent;
+      color:var(--text3);
+      cursor:pointer;
+      font-size:12px;
+      font-weight:700;
     }
-    .tab-btn.active { background: var(--gold); color: #0d0f14; }
+
+    .tab-btn.active {
+      background:var(--gold);
+      color:#0d0f14;
+    }
 
     .board {
-      flex: 1;
-      overflow-x: auto;
-      overflow-y: hidden;
-      display: grid;
-      gap: 12px;
-      min-height: 0;
+      flex:1;
+      overflow-x:auto;
+      overflow-y:hidden;
+      display:grid;
+      gap:12px;
+      min-height:0;
     }
 
     .column {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      overflow: hidden;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      overflow:hidden;
     }
 
     .column-header {
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding:12px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
-    .column-header h3 { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text2); }
-    .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
-    .count { font-size: 11px; font-weight: 700; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); padding: 3px 8px; border-radius: 999px; }
 
-    .dropzone { flex: 1; min-height: 120px; overflow-y: auto; padding: 10px; transition: background .15s; }
-    .dropzone.drag-over { background: rgba(201,162,39,.07); }
+    .column-header h3 {
+      font-size:13px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text2);
+    }
+
+    .dot {
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      display:inline-block;
+    }
+
+    .count {
+      font-size:11px;
+      font-weight:800;
+      color:var(--text3);
+      background:var(--surface2);
+      border:1px solid var(--border);
+      padding:3px 8px;
+      border-radius:999px;
+    }
+
+    .dropzone {
+      flex:1;
+      min-height:120px;
+      overflow-y:auto;
+      padding:10px;
+    }
+
+    .dropzone.drag-over {
+      background:rgba(201,162,39,.08);
+    }
 
     .card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 8px;
-      cursor: grab;
-      transition: .15s;
-      position: relative;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:8px;
+      cursor:grab;
+      transition:.15s;
+      position:relative;
     }
-    .card:hover { border-color: var(--border2); box-shadow: var(--shadow); transform: translateY(-1px); }
-    .card::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      border-radius: 3px 0 0 3px;
-      background: var(--border2);
+
+    .card:hover {
+      border-color:var(--border2);
+      box-shadow:var(--shadow);
+      transform:translateY(-1px);
     }
-    .card.prio-baixa::before { background: var(--green); }
-    .card.prio-media::before { background: var(--blue); }
-    .card.prio-alta::before { background: var(--amber); }
-    .card.prio-critico::before { background: var(--red); }
 
-    .card h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; line-height: 1.4; }
-    .card-code { font-size: 10px; color: var(--text3); margin-bottom: 8px; font-family: monospace; }
+    .card:before {
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:3px;
+      border-radius:3px 0 0 3px;
+      background:var(--border2);
+    }
 
-    .badges { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
-    .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; border-radius: 999px; padding: 3px 7px; letter-spacing: .04em; }
-    .badge-demanda { background: rgba(74,128,245,.15); color: #6b9eff; }
-    .badge-tarefa { background: rgba(155,107,255,.15); color: var(--purple); }
-    .badge-baixa, .badge-baixo { background: rgba(46,204,135,.15); color: var(--green); }
-    .badge-media, .badge-medio { background: rgba(74,128,245,.15); color: #6b9eff; }
-    .badge-alta, .badge-alto { background: rgba(245,166,35,.15); color: var(--amber); }
-    .badge-critico { background: rgba(240,64,64,.15); color: var(--red); }
+    .card.prio-baixa:before { background:var(--green); }
+    .card.prio-media:before { background:var(--blue); }
+    .card.prio-alta:before { background:var(--amber); }
+    .card.prio-critico:before { background:var(--red); }
 
-    .card-desc { font-size: 12px; color: var(--text3); line-height: 1.5; margin: 6px 0; }
-    .card-meta { font-size: 11px; color: var(--text3); display: grid; gap: 3px; margin-top: 8px; }
-    .overdue { color: var(--red) !important; font-weight: 600; }
-    .due-soon { color: var(--amber) !important; font-weight: 600; }
+    .card h4 {
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+      line-height:1.4;
+    }
+
+    .card-code {
+      font-size:10px;
+      color:var(--text3);
+      margin-bottom:8px;
+      font-family:monospace;
+    }
+
+    .badges {
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin:8px 0;
+    }
+
+    .badge {
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      border-radius:999px;
+      padding:3px 7px;
+      letter-spacing:.04em;
+    }
+
+    .badge-demanda { background:rgba(74,128,245,.15); color:#6b9eff; }
+    .badge-tarefa { background:rgba(155,107,255,.15); color:var(--purple); }
+    .badge-baixa, .badge-baixo { background:rgba(46,204,135,.15); color:var(--green); }
+    .badge-media, .badge-medio { background:rgba(74,128,245,.15); color:#6b9eff; }
+    .badge-alta, .badge-alto { background:rgba(245,166,35,.15); color:var(--amber); }
+    .badge-critico { background:rgba(240,64,64,.15); color:var(--red); }
+
+    .card-desc {
+      font-size:12px;
+      color:var(--text3);
+      line-height:1.5;
+      margin:6px 0;
+    }
+
+    .card-meta {
+      font-size:11px;
+      color:var(--text3);
+      display:grid;
+      gap:3px;
+      margin-top:8px;
+    }
+
+    .overdue {
+      color:var(--red) !important;
+      font-weight:800;
+    }
+
+    .due-soon {
+      color:var(--amber) !important;
+      font-weight:800;
+    }
 
     .card-footer {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
     .avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      font-weight:800;
+      color:#fff;
+      flex-shrink:0;
     }
-    .resp-label { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
 
-    .empty { text-align: center; color: var(--text3); font-size: 12px; padding: 32px 8px; opacity: .7; }
+    .resp-label {
+      font-size:11px;
+      color:var(--text3);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .empty {
+      text-align:center;
+      color:var(--text3);
+      font-size:12px;
+      padding:32px 8px;
+      opacity:.75;
+    }
 
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(6px);
-      z-index: 1000;
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(0,0,0,.75);
+      backdrop-filter:blur(6px);
+      z-index:1000;
     }
-    .modal-overlay.active { display: flex; }
+
+    .modal-overlay.active {
+      display:flex;
+    }
 
     .modal {
-      width: 820px;
-      max-width: 96vw;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      box-shadow: 0 12px 48px rgba(0,0,0,.6);
+      width:820px;
+      max-width:96vw;
+      max-height:90vh;
+      overflow-y:auto;
+      background:var(--surface);
+      border:1px solid var(--border2);
+      border-radius:20px;
+      box-shadow:0 12px 48px rgba(0,0,0,.6);
     }
-    .modal-lg { width: 1060px; }
 
-    .modal-header, .modal-footer {
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
+    .modal-lg {
+      width:1060px;
     }
-    .modal-footer { border-top: 1px solid var(--border); border-bottom: none; justify-content: flex-end; gap: 8px; }
-    .modal-body { padding: 20px 22px; }
-    .modal-title { font-family: "Playfair Display", serif; font-size: 20px; }
-    .modal-close { width: 32px; height: 32px; border: none; border-radius: 8px; background: var(--surface2); color: var(--text3); cursor: pointer; font-size: 18px; }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .modal-header,
+    .modal-footer {
+      padding:18px 22px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .modal-footer {
+      border-top:1px solid var(--border);
+      border-bottom:0;
+      justify-content:flex-end;
+    }
+
+    .modal-body {
+      padding:20px 22px;
+    }
+
+    .modal-title {
+      font-size:20px;
+      font-weight:800;
+    }
+
+    .modal-close {
+      width:32px;
+      height:32px;
+      border:0;
+      border-radius:8px;
+      background:var(--surface2);
+      color:var(--text3);
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .grid-2 {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .grid-3 {
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
+    }
 
     .section-divider {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      border-top: 1px solid var(--border);
-      padding-top: 14px;
-      margin-top: 4px;
-      margin-bottom: 12px;
+      font-size:11px;
+      font-weight:800;
+      color:var(--text3);
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      border-top:1px solid var(--border);
+      padding-top:14px;
+      margin-top:4px;
+      margin-bottom:12px;
+    }
+
+    .info-box {
+      background:rgba(201,162,39,.07);
+      border:1px solid rgba(201,162,39,.25);
+      border-radius:10px;
+      padding:12px 14px;
+      font-size:12px;
+      color:var(--text2);
+      line-height:1.6;
+    }
+
+    .user-row {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      background:var(--surface3);
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-bottom:8px;
+    }
+
+    .user-info {
+      flex:1;
+      min-width:0;
+    }
+
+    .user-name {
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .user-meta {
+      font-size:11px;
+      color:var(--text3);
     }
 
     .check-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-bottom:6px;
     }
-    .check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--gold); flex-shrink: 0; }
-    .check-item span { flex: 1; font-size: 13px; color: var(--text2); }
-    .check-item span.done { text-decoration: line-through; color: var(--text3); }
 
-    .user-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      background: var(--surface3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 8px;
+    .check-item input[type="checkbox"] {
+      width:16px;
+      height:16px;
+      accent-color:var(--gold);
+      flex-shrink:0;
     }
-    .user-info { flex: 1; min-width: 0; }
-    .user-name { font-size: 13px; font-weight: 600; }
-    .user-meta { font-size: 11px; color: var(--text3); }
 
-    .info-box {
-      background: rgba(201,162,39,.07);
-      border: 1px solid rgba(201,162,39,.25);
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 12px;
-      color: var(--text2);
-      line-height: 1.6;
+    .check-item span {
+      flex:1;
+      font-size:13px;
+      color:var(--text2);
+    }
+
+    .check-item span.done {
+      text-decoration:line-through;
+      color:var(--text3);
+    }
+
+    .config-row {
+      display:grid;
+      grid-template-columns:1fr 1fr 70px 54px;
+      gap:8px;
+      margin-bottom:8px;
+      align-items:center;
+    }
+
+    .config-row.no-color {
+      grid-template-columns:1fr 1fr 54px;
     }
 
     .toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      color: var(--text);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      transform: translateY(80px);
-      opacity: 0;
-      transition: .25s;
-      z-index: 2000;
-      max-width: 440px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 12px 48px rgba(0,0,0,.6);
-    }
-    .toast.show { transform: translateY(0); opacity: 1; }
-
-    .login-screen {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background:
-        radial-gradient(circle at top left, rgba(201,162,39,.16), transparent 36%),
-        radial-gradient(circle at bottom right, rgba(74,128,245,.13), transparent 32%),
-        var(--bg);
-    }
-    .login-card {
-      width: 430px;
-      max-width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 18px 70px rgba(0,0,0,.55);
-    }
-    .login-card .brand { margin-bottom: 22px; }
-    .login-hint { font-size: 12px; color: var(--text3); line-height: 1.6; margin-top: 12px; }
-
-    .profile-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 10px;
-      color: var(--text2);
-      font-size: 12px;
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      background:var(--surface);
+      border:1px solid var(--border2);
+      color:var(--text);
+      padding:12px 16px;
+      border-radius:12px;
+      font-size:13px;
+      transform:translateY(80px);
+      opacity:0;
+      transition:.25s;
+      z-index:2000;
+      max-width:440px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 12px 48px rgba(0,0,0,.6);
     }
 
-    .config-line {
-      display: grid;
-      grid-template-columns: 1fr 1fr 58px 58px;
-      gap: 8px;
-      margin-bottom: 8px;
-      align-items: center;
+    .toast.show {
+      transform:translateY(0);
+      opacity:1;
     }
 
-    .config-line.status-line {
-      grid-template-columns: 1fr 1fr 80px 58px 58px;
-    }
+    @media (max-width:1024px) {
+      body {
+        overflow:auto;
+      }
 
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th {
-      padding: 10px 12px;
-      text-align: left;
-      color: var(--text3);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      border-bottom: 1px solid var(--border);
-    }
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text2);
-      vertical-align: middle;
-    }
+      header {
+        height:auto;
+        flex-wrap:wrap;
+        padding:14px;
+      }
 
-    @media (max-width: 1024px) {
-      body { overflow: auto; }
-      header { height: auto; flex-wrap: wrap; padding: 14px; }
-      .layout { height: auto; grid-template-columns: 1fr; }
-      aside { display: none; }
-      .board { grid-template-columns: repeat(5, 260px) !important; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .config-line, .config-line.status-line { grid-template-columns: 1fr; }
+      .layout {
+        height:auto;
+        grid-template-columns:1fr;
+      }
+
+      aside {
+        display:none;
+      }
+
+      .board {
+        grid-template-columns:repeat(5,260px) !important;
+      }
+
+      .grid-2,
+      .grid-3,
+      .config-row,
+      .config-row.no-color {
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -494,21 +833,21 @@
 
       <div class="field">
         <label>E-mail</label>
-        <input id="loginEmail" type="email" placeholder="seu@email.com" autocomplete="username" />
+        <input id="loginEmail" type="email" autocomplete="username" />
       </div>
 
       <div class="field">
         <label>Senha</label>
-        <input id="loginPassword" type="password" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()" />
+        <input id="loginPassword" type="password" autocomplete="current-password" />
       </div>
 
-      <button class="btn btn-primary" style="width:100%" onclick="login()">Entrar</button>
+      <button class="btn btn-primary" style="width:100%" id="btnLogin">Entrar</button>
 
       <div class="login-hint">
-        Primeiro acesso:<br>
+        Login inicial:<br>
         <strong>admin@lexboard.local</strong><br>
         <strong>admin123</strong><br><br>
-        Esta versão usa armazenamento local do navegador para funcionar no GitHub Pages.
+        Versão local para GitHub Pages. Os dados ficam salvos no navegador.
       </div>
     </div>
   </section>
@@ -524,15 +863,15 @@
       </div>
 
       <div class="search-wrap">
-        <input id="searchInput" class="search" placeholder="Buscar por título, processo, parte, responsável..." oninput="renderAll()" />
+        <input id="searchInput" class="search" placeholder="Buscar por título, processo, parte, responsável..." />
       </div>
 
       <div class="top-actions">
         <span class="profile-pill" id="profilePill">Usuário</span>
-        <button class="btn btn-secondary btn-sm admin-only" onclick="openModal('adminModal')">⚙ Admin</button>
-        <button class="btn btn-secondary btn-sm manager-only" onclick="openModal('usersModal')">👥 Usuários</button>
-        <button class="btn btn-primary can-edit" onclick="newTask()">+ Nova tarefa</button>
-        <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+        <button class="btn btn-secondary btn-sm admin-only" id="btnOpenAdmin">⚙ Admin</button>
+        <button class="btn btn-secondary btn-sm manager-only" id="btnOpenUsers">👥 Usuários</button>
+        <button class="btn btn-primary can-edit" id="btnNewTask">+ Nova tarefa</button>
+        <button class="btn btn-ghost btn-sm" id="btnLogout">Sair</button>
       </div>
     </header>
 
@@ -550,23 +889,28 @@
 
         <div class="panel">
           <div class="panel-title">Filtros</div>
+
           <div class="field">
             <label>Tipo</label>
-            <select id="filterTipo" onchange="renderAll()"></select>
+            <select id="filterTipo"></select>
           </div>
+
           <div class="field">
             <label>Área jurídica</label>
-            <select id="filterArea" onchange="renderAll()"></select>
+            <select id="filterArea"></select>
           </div>
+
           <div class="field">
             <label>Risco</label>
-            <select id="filterRisco" onchange="renderAll()"></select>
+            <select id="filterRisco"></select>
           </div>
+
           <div class="field">
             <label>Responsável</label>
-            <select id="filterResponsavel" onchange="renderAll()"></select>
+            <select id="filterResponsavel"></select>
           </div>
-          <button class="btn btn-ghost btn-sm" style="width:100%" onclick="clearFilters()">✕ Limpar filtros</button>
+
+          <button class="btn btn-ghost btn-sm" style="width:100%" id="btnClearFilters">✕ Limpar filtros</button>
         </div>
 
         <div class="panel" style="flex:1">
@@ -583,8 +927,8 @@
           </div>
 
           <div class="view-tabs">
-            <button class="tab-btn active" onclick="switchView('kanban', this)">⊞ Kanban</button>
-            <button class="tab-btn" onclick="switchView('lista', this)">≡ Lista</button>
+            <button class="tab-btn active" id="btnKanban">⊞ Kanban</button>
+            <button class="tab-btn" id="btnLista">≡ Lista</button>
           </div>
         </div>
 
@@ -598,12 +942,12 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <div class="modal-title">Administração do sistema</div>
-        <button class="modal-close" onclick="closeModal('adminModal')">×</button>
+        <button class="modal-close" data-close="adminModal">×</button>
       </div>
 
       <div class="modal-body">
         <div class="info-box" style="margin-bottom:16px">
-          Configure os aspectos operacionais do sistema. As alterações são salvas no navegador via localStorage.
+          Configure os aspectos operacionais do sistema. As alterações são salvas no navegador.
         </div>
 
         <div class="grid-2">
@@ -611,6 +955,7 @@
             <label>Nome do sistema</label>
             <input id="cfgAppName" />
           </div>
+
           <div class="field">
             <label>Subtítulo</label>
             <input id="cfgSubtitle" />
@@ -619,29 +964,29 @@
 
         <div class="section-divider">Tipos de registro</div>
         <div id="cfgTiposBox"></div>
-        <button class="btn btn-secondary btn-sm" onclick="addConfigItem('tipos')">+ Adicionar tipo</button>
+        <button class="btn btn-secondary btn-sm" data-add-config="tipos">+ Adicionar tipo</button>
 
         <div class="section-divider">Áreas jurídicas</div>
         <div id="cfgAreasBox"></div>
-        <button class="btn btn-secondary btn-sm" onclick="addConfigItem('areas')">+ Adicionar área</button>
+        <button class="btn btn-secondary btn-sm" data-add-config="areas">+ Adicionar área</button>
 
         <div class="section-divider">Status / Colunas do Kanban</div>
         <div id="cfgStatusBox"></div>
-        <button class="btn btn-secondary btn-sm" onclick="addConfigItem('status')">+ Adicionar status</button>
+        <button class="btn btn-secondary btn-sm" data-add-config="status">+ Adicionar status</button>
 
         <div class="section-divider">Prioridades</div>
         <div id="cfgPrioridadesBox"></div>
-        <button class="btn btn-secondary btn-sm" onclick="addConfigItem('prioridades')">+ Adicionar prioridade</button>
+        <button class="btn btn-secondary btn-sm" data-add-config="prioridades">+ Adicionar prioridade</button>
 
         <div class="section-divider">Riscos</div>
         <div id="cfgRiscosBox"></div>
-        <button class="btn btn-secondary btn-sm" onclick="addConfigItem('riscos')">+ Adicionar risco</button>
+        <button class="btn btn-secondary btn-sm" data-add-config="riscos">+ Adicionar risco</button>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-danger" onclick="resetSystem()">Resetar sistema</button>
-        <button class="btn btn-secondary" onclick="closeModal('adminModal')">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveAdminConfig()">Salvar configurações</button>
+        <button class="btn btn-danger" id="btnResetSystem">Resetar sistema</button>
+        <button class="btn btn-secondary" data-close="adminModal">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveAdmin">Salvar configurações</button>
       </div>
     </div>
   </div>
@@ -650,7 +995,7 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <div class="modal-title">Usuários e perfis</div>
-        <button class="modal-close" onclick="closeModal('usersModal')">×</button>
+        <button class="modal-close" data-close="usersModal">×</button>
       </div>
 
       <div class="modal-body">
@@ -661,10 +1006,12 @@
             <label>Nome *</label>
             <input id="uNome" placeholder="Nome completo" />
           </div>
+
           <div class="field">
             <label>E-mail/login *</label>
             <input id="uEmail" type="email" placeholder="email@empresa.com" />
           </div>
+
           <div class="field">
             <label>Senha</label>
             <input id="uPassword" type="password" placeholder="Preencha para criar/alterar" />
@@ -676,6 +1023,7 @@
             <label>Cargo/Função</label>
             <input id="uCargo" placeholder="Advogado, analista, gestor..." />
           </div>
+
           <div class="field">
             <label>Perfil</label>
             <select id="uPerfil">
@@ -686,6 +1034,7 @@
               <option value="visualizador">Visualizador</option>
             </select>
           </div>
+
           <div class="field">
             <label>Cor</label>
             <input id="uCor" type="color" value="#4a80f5" style="height:42px;padding:4px" />
@@ -700,6 +1049,7 @@
               <option value="false">Não</option>
             </select>
           </div>
+
           <div class="field">
             <label>Recebe alertas</label>
             <select id="uAlertas">
@@ -707,20 +1057,21 @@
               <option value="false">Não</option>
             </select>
           </div>
+
           <div class="field">
             <label>&nbsp;</label>
-            <button class="btn btn-primary" style="width:100%" onclick="saveUser()">Salvar usuário</button>
+            <button class="btn btn-primary" style="width:100%" id="btnSaveUser">Salvar usuário</button>
           </div>
         </div>
 
-        <button class="btn btn-ghost btn-sm" onclick="clearUserForm()">Limpar formulário</button>
+        <button class="btn btn-ghost btn-sm" id="btnClearUser">Limpar formulário</button>
 
         <div class="section-divider">Usuários cadastrados</div>
         <div id="usersGrid"></div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('usersModal')">Fechar</button>
+        <button class="btn btn-secondary" data-close="usersModal">Fechar</button>
       </div>
     </div>
   </div>
@@ -729,7 +1080,7 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <div class="modal-title" id="taskModalTitle">Nova tarefa</div>
-        <button class="modal-close" onclick="closeModal('taskModal')">×</button>
+        <button class="modal-close" data-close="taskModal">×</button>
       </div>
 
       <div class="modal-body">
@@ -742,10 +1093,12 @@
             <label>Tipo *</label>
             <select id="taskTipo"></select>
           </div>
+
           <div class="field">
             <label>Status *</label>
             <select id="taskStatus"></select>
           </div>
+
           <div class="field">
             <label>Prioridade *</label>
             <select id="taskPrioridade"></select>
@@ -767,10 +1120,12 @@
             <label>Área jurídica</label>
             <select id="taskArea"></select>
           </div>
+
           <div class="field">
             <label>Risco jurídico</label>
             <select id="taskRisco"></select>
           </div>
+
           <div class="field">
             <label>Responsável</label>
             <select id="taskResponsavel"></select>
@@ -782,10 +1137,12 @@
             <label>Prazo</label>
             <input type="date" id="taskPrazo" />
           </div>
+
           <div class="field">
             <label>Nº do processo</label>
             <input id="taskProcesso" placeholder="0000000-00.0000.0.00.0000" />
           </div>
+
           <div class="field">
             <label>Valor envolvido</label>
             <input type="number" step="0.01" id="taskValor" placeholder="0,00" />
@@ -797,6 +1154,7 @@
             <label>Parte contrária / interessado</label>
             <input id="taskParte" placeholder="Parte, cliente, fornecedor..." />
           </div>
+
           <div class="field">
             <label>Link documento/pasta</label>
             <input id="taskLink" placeholder="https://..." />
@@ -804,10 +1162,12 @@
         </div>
 
         <div class="section-divider">Checklist</div>
+
         <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
-          <input id="checkInput" placeholder="Adicionar item ao checklist..." onkeydown="if(event.key==='Enter'){event.preventDefault();addChecklistItem();}" />
-          <button type="button" class="btn btn-secondary btn-sm" onclick="addChecklistItem()">+ Adicionar</button>
+          <input id="checkInput" placeholder="Adicionar item ao checklist..." />
+          <button type="button" class="btn btn-secondary btn-sm" id="btnAddCheck">+ Adicionar</button>
         </div>
+
         <div id="checklistBox"></div>
 
         <div class="section-divider">Histórico</div>
@@ -815,9 +1175,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-danger btn-sm" id="deleteTaskBtn" style="margin-right:auto;display:none" onclick="deleteTask()">Excluir</button>
-        <button class="btn btn-secondary" onclick="closeModal('taskModal')">Cancelar</button>
-        <button class="btn btn-primary can-edit" onclick="saveTask()">Salvar</button>
+        <button class="btn btn-danger btn-sm" id="deleteTaskBtn" style="margin-right:auto;display:none">Excluir</button>
+        <button class="btn btn-secondary" data-close="taskModal">Cancelar</button>
+        <button class="btn btn-primary can-edit" id="btnSaveTask">Salvar</button>
       </div>
     </div>
   </div>
@@ -828,7 +1188,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "LEXBOARD_GITHUB_SINGLE_FILE_V1";
+    const STORAGE_KEY = "LEXBOARD_GITHUB_FUNCIONAL_V2";
 
     const DEFAULT_CONFIG = {
       appName: "LexBoard",
@@ -882,16 +1242,67 @@
     let checklistAtual = [];
     let draggedId = null;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".modal-overlay").forEach(modal => {
-        modal.addEventListener("click", e => {
-          if (e.target === modal) closeModal(modal.id);
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDb();
+      bindStaticEvents();
+      showLogin();
+    });
+
+    function bindStaticEvents() {
+      byId("btnLogin").addEventListener("click", login);
+      byId("loginPassword").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") login();
+      });
+
+      byId("btnLogout").addEventListener("click", logout);
+      byId("btnOpenAdmin").addEventListener("click", function () { openModal("adminModal"); });
+      byId("btnOpenUsers").addEventListener("click", function () { openModal("usersModal"); });
+      byId("btnNewTask").addEventListener("click", newTask);
+      byId("btnClearFilters").addEventListener("click", clearFilters);
+
+      byId("searchInput").addEventListener("input", renderAll);
+      byId("filterTipo").addEventListener("change", renderAll);
+      byId("filterArea").addEventListener("change", renderAll);
+      byId("filterRisco").addEventListener("change", renderAll);
+      byId("filterResponsavel").addEventListener("change", renderAll);
+
+      byId("btnKanban").addEventListener("click", function () { switchView("kanban"); });
+      byId("btnLista").addEventListener("click", function () { switchView("lista"); });
+
+      byId("btnSaveTask").addEventListener("click", saveTask);
+      byId("deleteTaskBtn").addEventListener("click", deleteTask);
+      byId("btnAddCheck").addEventListener("click", addChecklistItem);
+      byId("checkInput").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addChecklistItem();
+        }
+      });
+
+      byId("btnSaveUser").addEventListener("click", saveUser);
+      byId("btnClearUser").addEventListener("click", clearUserForm);
+
+      byId("btnSaveAdmin").addEventListener("click", saveAdminConfig);
+      byId("btnResetSystem").addEventListener("click", resetSystem);
+
+      document.querySelectorAll("[data-close]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          closeModal(btn.getAttribute("data-close"));
         });
       });
 
-      loadDb();
-      showLogin();
-    });
+      document.querySelectorAll("[data-add-config]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          addConfigItem(btn.getAttribute("data-add-config"));
+        });
+      });
+
+      document.querySelectorAll(".modal-overlay").forEach(function (modal) {
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
+    }
 
     function createDefaultDb() {
       const adminId = uid();
@@ -900,8 +1311,7 @@
       const today = new Date();
 
       return {
-        config: structuredCloneSafe(DEFAULT_CONFIG),
-        sessionUserId: null,
+        config: clone(DEFAULT_CONFIG),
         users: [
           {
             id: adminId,
@@ -918,9 +1328,9 @@
           {
             id: r1,
             nome: "Marina Costa",
-            email: "marina@escritorio.com",
+            email: "marina@escritorio.local",
             password: "123456",
-            cargo: "Advogada Sênior",
+            cargo: "Advogada",
             perfil: "advogado",
             cor: "#4a80f5",
             ativo: true,
@@ -930,9 +1340,9 @@
           {
             id: r2,
             nome: "Rafael Lima",
-            email: "rafael@escritorio.com",
+            email: "rafael@escritorio.local",
             password: "123456",
-            cargo: "Gestor Jurídico",
+            cargo: "Gestor jurídico",
             perfil: "gestor",
             cor: "#9b6bff",
             ativo: true,
@@ -968,34 +1378,6 @@
             updatedBy: adminId,
             createdAt: now(),
             updatedAt: now()
-          },
-          {
-            id: uid(),
-            codigo: "JUR-2026-0002",
-            tipo: "tarefa",
-            titulo: "Protocolar manifestação trabalhista",
-            descricao: "Conferir documentos e protocolar peça no tribunal.",
-            area: "trabalhista",
-            risco: "alto",
-            prioridade: "critico",
-            status: "em_execucao",
-            responsavelId: r1,
-            prazo: toISODate(addDays(today, -1)),
-            processo: "0001234-56.2024.5.02.0001",
-            parte: "Ex-colaborador",
-            valor: 42000,
-            link: "",
-            checklist: [
-              { text: "Conferir procuração", done: true },
-              { text: "Protocolar peça", done: false }
-            ],
-            historico: [
-              { msg: "Criado", userId: adminId, date: now() }
-            ],
-            createdBy: adminId,
-            updatedBy: adminId,
-            createdAt: now(),
-            updatedAt: now()
           }
         ]
       };
@@ -1012,7 +1394,7 @@
 
       try {
         db = JSON.parse(raw);
-      } catch {
+      } catch (e) {
         db = createDefaultDb();
         saveDb();
       }
@@ -1021,7 +1403,7 @@
       db.users = Array.isArray(db.users) ? db.users : [];
       db.tasks = Array.isArray(db.tasks) ? db.tasks : [];
 
-      if (!db.users.some(u => u.email === "admin@lexboard.local")) {
+      if (!db.users.some(function (u) { return u.email === "admin@lexboard.local"; })) {
         db.users.unshift({
           id: uid(),
           nome: "Administrador",
@@ -1043,43 +1425,47 @@
     }
 
     function normalizeConfig(cfg) {
-      const base = structuredCloneSafe(DEFAULT_CONFIG);
-      const out = { ...base, ...(cfg || {}) };
+      const base = clone(DEFAULT_CONFIG);
+      const out = Object.assign(base, cfg || {});
 
-      out.tipos = normalizeList(out.tipos, base.tipos);
-      out.areas = normalizeList(out.areas, base.areas);
-      out.status = normalizeList(out.status, base.status, true);
-      out.prioridades = normalizeList(out.prioridades, base.prioridades);
-      out.riscos = normalizeList(out.riscos, base.riscos);
+      out.tipos = normalizeList(out.tipos, DEFAULT_CONFIG.tipos, false);
+      out.areas = normalizeList(out.areas, DEFAULT_CONFIG.areas, false);
+      out.status = normalizeList(out.status, DEFAULT_CONFIG.status, true);
+      out.prioridades = normalizeList(out.prioridades, DEFAULT_CONFIG.prioridades, false);
+      out.riscos = normalizeList(out.riscos, DEFAULT_CONFIG.riscos, false);
 
       return out;
     }
 
-    function normalizeList(list, fallback, withColor = false) {
-      if (!Array.isArray(list) || !list.length) return structuredCloneSafe(fallback);
+    function normalizeList(list, fallback, withColor) {
+      if (!Array.isArray(list) || !list.length) return clone(fallback);
 
-      return list
-        .filter(x => x && x.id && x.label)
-        .map(x => ({
-          id: slugify(x.id),
-          label: String(x.label),
-          ...(withColor ? { color: x.color || "#556080" } : {})
-        }));
+      const clean = list
+        .filter(function (x) { return x && x.id && x.label; })
+        .map(function (x) {
+          const obj = {
+            id: slugify(x.id),
+            label: String(x.label)
+          };
+
+          if (withColor) obj.color = x.color || "#556080";
+          return obj;
+        });
+
+      return clean.length ? clean : clone(fallback);
     }
 
     function showLogin() {
       currentUser = null;
-      db.sessionUserId = null;
-      saveDb();
-      document.getElementById("loginScreen").classList.remove("hidden");
-      document.getElementById("appScreen").classList.add("hidden");
+      byId("loginScreen").classList.remove("hidden");
+      byId("appScreen").classList.add("hidden");
       setInputValue("loginEmail", "");
       setInputValue("loginPassword", "");
     }
 
     function showApp() {
-      document.getElementById("loginScreen").classList.add("hidden");
-      document.getElementById("appScreen").classList.remove("hidden");
+      byId("loginScreen").classList.add("hidden");
+      byId("appScreen").classList.remove("hidden");
       applyConfigToUI();
       renderAll();
       applyPermissions();
@@ -1087,14 +1473,16 @@
 
     function login() {
       const email = getInputValue("loginEmail").trim().toLowerCase();
-      const password = getInputValue("loginPassword");
+      const pass = getInputValue("loginPassword");
 
-      if (!email || !password) {
+      if (!email || !pass) {
         showToast("Informe e-mail e senha.", "error");
         return;
       }
 
-      const user = db.users.find(u => String(u.email).toLowerCase() === email && u.password === password);
+      const user = db.users.find(function (u) {
+        return String(u.email).toLowerCase() === email && String(u.password) === String(pass);
+      });
 
       if (!user) {
         showToast("Login ou senha inválidos.", "error");
@@ -1102,13 +1490,11 @@
       }
 
       if (user.ativo === false) {
-        showToast("Usuário inativo. Procure o administrador.", "error");
+        showToast("Usuário inativo.", "error");
         return;
       }
 
       currentUser = user;
-      db.sessionUserId = user.id;
-      saveDb();
       showApp();
       showToast("Login realizado.");
     }
@@ -1119,7 +1505,7 @@
     }
 
     function currentRole() {
-      return currentUser?.perfil || "visualizador";
+      return currentUser ? currentUser.perfil : "visualizador";
     }
 
     function isAdmin() {
@@ -1135,11 +1521,21 @@
     }
 
     function applyPermissions() {
-      document.querySelectorAll(".admin-only").forEach(el => el.classList.toggle("hidden", !isAdmin()));
-      document.querySelectorAll(".manager-only").forEach(el => el.classList.toggle("hidden", !canManageUsers()));
-      document.querySelectorAll(".can-edit").forEach(el => el.classList.toggle("hidden", !canEditTasks()));
+      document.querySelectorAll(".admin-only").forEach(function (el) {
+        el.classList.toggle("hidden", !isAdmin());
+      });
 
-      setText("profilePill", `${currentUser.nome} · ${ROLE_LABEL[currentUser.perfil] || currentUser.perfil}`);
+      document.querySelectorAll(".manager-only").forEach(function (el) {
+        el.classList.toggle("hidden", !canManageUsers());
+      });
+
+      document.querySelectorAll(".can-edit").forEach(function (el) {
+        el.classList.toggle("hidden", !canEditTasks());
+      });
+
+      if (currentUser) {
+        setText("profilePill", currentUser.nome + " · " + (ROLE_LABEL[currentUser.perfil] || currentUser.perfil));
+      }
     }
 
     function applyConfigToUI() {
@@ -1149,40 +1545,50 @@
       setOptions("filterTipo", db.config.tipos, "Todos");
       setOptions("filterArea", db.config.areas, "Todas");
       setOptions("filterRisco", db.config.riscos, "Todos");
-      setResponsavelOptions();
+      setResponsavelOptions("filterResponsavel", false);
 
-      setOptions("taskTipo", db.config.tipos);
-      setOptions("taskStatus", db.config.status);
-      setOptions("taskPrioridade", db.config.prioridades);
-      setOptions("taskArea", db.config.areas);
-      setOptions("taskRisco", db.config.riscos);
+      setOptions("taskTipo", db.config.tipos, null);
+      setOptions("taskStatus", db.config.status, null);
+      setOptions("taskPrioridade", db.config.prioridades, null);
+      setOptions("taskArea", db.config.areas, null);
+      setOptions("taskRisco", db.config.riscos, null);
       setResponsavelOptions("taskResponsavel", true);
     }
 
-    function setOptions(id, items, emptyLabel = null) {
-      const el = document.getElementById(id);
+    function setOptions(id, items, emptyLabel) {
+      const el = byId(id);
       if (!el) return;
 
       const current = el.value;
-      const empty = emptyLabel ? `<option value="">${escapeHtml(emptyLabel)}</option>` : "";
-      el.innerHTML = empty + items.map(item => `<option value="${escapeAttr(item.id)}">${escapeHtml(item.label)}</option>`).join("");
+      let html = emptyLabel ? '<option value="">' + escapeHtml(emptyLabel) + '</option>' : "";
 
-      if ([...el.options].some(opt => opt.value === current)) {
+      html += items.map(function (i) {
+        return '<option value="' + escapeAttr(i.id) + '">' + escapeHtml(i.label) + '</option>';
+      }).join("");
+
+      el.innerHTML = html;
+
+      if ([].some.call(el.options, function (o) { return o.value === current; })) {
         el.value = current;
       }
     }
 
-    function setResponsavelOptions(id = "filterResponsavel", includeEmpty = false) {
-      const el = document.getElementById(id);
+    function setResponsavelOptions(id, allowEmpty) {
+      const el = byId(id);
       if (!el) return;
 
       const current = el.value;
-      const activeUsers = db.users.filter(u => u.ativo !== false);
-      const first = includeEmpty ? `<option value="">Sem responsável</option>` : `<option value="">Todos</option>`;
+      let html = allowEmpty ? '<option value="">Sem responsável</option>' : '<option value="">Todos</option>';
 
-      el.innerHTML = first + activeUsers.map(u => `<option value="${escapeAttr(u.id)}">${escapeHtml(u.nome)}</option>`).join("");
+      html += db.users
+        .filter(function (u) { return u.ativo !== false; })
+        .map(function (u) {
+          return '<option value="' + escapeAttr(u.id) + '">' + escapeHtml(u.nome) + '</option>';
+        }).join("");
 
-      if ([...el.options].some(opt => opt.value === current)) {
+      el.innerHTML = html;
+
+      if ([].some.call(el.options, function (o) { return o.value === current; })) {
         el.value = current;
       }
     }
@@ -1202,11 +1608,11 @@
       const tipo = getSelectValue("filterTipo");
       const area = getSelectValue("filterArea");
       const risco = getSelectValue("filterRisco");
-      const responsavel = getSelectValue("filterResponsavel");
+      const respId = getSelectValue("filterResponsavel");
 
-      return db.tasks.filter(t => {
+      return db.tasks.filter(function (t) {
         const resp = findUser(t.responsavelId);
-        const createdBy = findUser(t.createdBy);
+        const created = findUser(t.createdBy);
 
         const text = [
           t.codigo,
@@ -1215,86 +1621,97 @@
           t.area,
           t.processo,
           t.parte,
-          resp?.nome,
-          resp?.email,
-          createdBy?.nome,
-          createdBy?.email
+          resp && resp.nome,
+          resp && resp.email,
+          created && created.nome
         ].join(" ").toLowerCase();
 
         return (!search || text.includes(search))
           && (!tipo || t.tipo === tipo)
           && (!area || t.area === area)
           && (!risco || t.risco === risco)
-          && (!responsavel || t.responsavelId === responsavel);
+          && (!respId || t.responsavelId === respId);
       });
     }
 
     function renderBoard() {
-      const board = document.getElementById("boardKanban");
+      const board = byId("boardKanban");
       const tasks = filteredTasks();
 
-      board.style.gridTemplateColumns = `repeat(${db.config.status.length}, minmax(260px, 1fr))`;
+      board.style.gridTemplateColumns = "repeat(" + db.config.status.length + ", minmax(260px, 1fr))";
 
-      board.innerHTML = db.config.status.map(status => {
-        const cards = tasks.filter(t => t.status === status.id);
+      board.innerHTML = db.config.status.map(function (s) {
+        const cards = tasks.filter(function (t) { return t.status === s.id; });
 
-        return `
-          <div class="column">
-            <div class="column-header">
-              <h3><span class="dot" style="background:${escapeAttr(status.color)}"></span>${escapeHtml(status.label)}</h3>
-              <span class="count">${cards.length}</span>
-            </div>
-            <div class="dropzone" data-status="${escapeAttr(status.id)}" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" ondrop="dropCard(event)">
-              ${cards.length ? cards.map(renderCard).join("") : '<div class="empty">Arraste cartões aqui</div>'}
-            </div>
-          </div>
-        `;
+        return ''
+          + '<div class="column">'
+          + '<div class="column-header">'
+          + '<h3><span class="dot" style="background:' + escapeAttr(s.color || "#556080") + '"></span>' + escapeHtml(s.label) + '</h3>'
+          + '<span class="count">' + cards.length + '</span>'
+          + '</div>'
+          + '<div class="dropzone" data-status="' + escapeAttr(s.id) + '">'
+          + (cards.length ? cards.map(renderCard).join("") : '<div class="empty">Arraste cartões aqui</div>')
+          + '</div>'
+          + '</div>';
       }).join("");
+
+      document.querySelectorAll(".dropzone").forEach(function (z) {
+        z.addEventListener("dragover", allowDrop);
+        z.addEventListener("dragleave", leaveDrop);
+        z.addEventListener("drop", dropCard);
+      });
+
+      document.querySelectorAll(".card").forEach(function (card) {
+        card.addEventListener("dragstart", function (e) {
+          dragCard(e, card.getAttribute("data-id"));
+        });
+
+        card.addEventListener("dblclick", function () {
+          editTask(card.getAttribute("data-id"));
+        });
+      });
+
+      document.querySelectorAll("[data-edit-task]").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          editTask(btn.getAttribute("data-edit-task"));
+        });
+      });
     }
 
     function renderCard(t) {
       const resp = findUser(t.responsavelId);
-      const criador = findUser(t.createdBy);
+      const created = findUser(t.createdBy);
       const cl = Array.isArray(t.checklist) ? t.checklist : [];
-      const done = cl.filter(c => c.done).length;
-      const iniciais = initials(resp?.nome || "?");
-      const prazoClass = getPrazoClass(t.prazo);
+      const done = cl.filter(function (c) { return c.done; }).length;
 
-      return `
-        <article class="card prio-${escapeAttr(t.prioridade)}" draggable="${canEditTasks()}" ondragstart="dragCard(event,'${escapeAttr(t.id)}')" ondblclick="editTask('${escapeAttr(t.id)}')">
-          <h4>${escapeHtml(t.titulo)}</h4>
-          <div class="card-code">${escapeHtml(t.codigo || t.id)}</div>
-
-          <div class="badges">
-            <span class="badge badge-${escapeAttr(t.tipo)}">${labelFrom(db.config.tipos, t.tipo)}</span>
-            <span class="badge badge-${escapeAttr(t.prioridade)}">${labelFrom(db.config.prioridades, t.prioridade)}</span>
-            <span class="badge badge-${escapeAttr(t.risco)}">Risco ${labelFrom(db.config.riscos, t.risco)}</span>
-          </div>
-
-          ${t.descricao ? `<div class="card-desc">${escapeHtml(t.descricao).slice(0, 140)}${t.descricao.length > 140 ? "…" : ""}</div>` : ""}
-
-          <div class="card-meta">
-            <div>⚖ ${labelFrom(db.config.areas, t.area)}</div>
-            <div class="${prazoClass}">⏱ ${formatDate(t.prazo) || "Sem prazo"}</div>
-            ${t.processo ? `<div>📄 ${escapeHtml(t.processo)}</div>` : ""}
-            ${cl.length ? `<div>☑ ${done}/${cl.length} checklist</div>` : ""}
-            ${t.valor ? `<div>💰 ${formatMoney(t.valor)}</div>` : ""}
-            <div>👤 Criado por: ${escapeHtml(criador?.nome || "—")}</div>
-          </div>
-
-          <div class="card-footer">
-            <div class="resp-label">
-              <span class="avatar" style="background:${escapeAttr(resp?.cor || "#556080")}">${escapeHtml(iniciais)}</span>
-              ${escapeHtml(resp?.nome || "Sem responsável")}
-            </div>
-            <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();editTask('${escapeAttr(t.id)}')">Abrir</button>
-          </div>
-        </article>
-      `;
+      return ''
+        + '<article class="card prio-' + escapeAttr(t.prioridade) + '" data-id="' + escapeAttr(t.id) + '" draggable="' + (canEditTasks() ? "true" : "false") + '">'
+        + '<h4>' + escapeHtml(t.titulo) + '</h4>'
+        + '<div class="card-code">' + escapeHtml(t.codigo || t.id) + '</div>'
+        + '<div class="badges">'
+        + '<span class="badge badge-' + escapeAttr(t.tipo) + '">' + labelFrom(db.config.tipos, t.tipo) + '</span>'
+        + '<span class="badge badge-' + escapeAttr(t.prioridade) + '">' + labelFrom(db.config.prioridades, t.prioridade) + '</span>'
+        + '<span class="badge badge-' + escapeAttr(t.risco) + '">Risco ' + labelFrom(db.config.riscos, t.risco) + '</span>'
+        + '</div>'
+        + (t.descricao ? '<div class="card-desc">' + escapeHtml(t.descricao).slice(0, 140) + (t.descricao.length > 140 ? "…" : "") + '</div>' : "")
+        + '<div class="card-meta">'
+        + '<div>⚖ ' + labelFrom(db.config.areas, t.area) + '</div>'
+        + '<div class="' + getPrazoClass(t.prazo) + '">⏱ ' + (formatDate(t.prazo) || "Sem prazo") + '</div>'
+        + (t.processo ? '<div>📄 ' + escapeHtml(t.processo) + '</div>' : "")
+        + (cl.length ? '<div>☑ ' + done + '/' + cl.length + ' checklist</div>' : "")
+        + (t.valor ? '<div>💰 ' + formatMoney(t.valor) + '</div>' : "")
+        + '<div>👤 Criado por: ' + escapeHtml(created ? created.nome : "—") + '</div>'
+        + '</div>'
+        + '<div class="card-footer">'
+        + '<div class="resp-label"><span class="avatar" style="background:' + escapeAttr(resp ? resp.cor : "#556080") + '">' + escapeHtml(initials(resp ? resp.nome : "?")) + '</span>' + escapeHtml(resp ? resp.nome : "Sem responsável") + '</div>'
+        + '<button class="btn btn-ghost btn-xs" data-edit-task="' + escapeAttr(t.id) + '">Abrir</button>'
+        + '</div>'
+        + '</article>';
     }
 
     function renderListView() {
-      const box = document.getElementById("boardLista");
+      const box = byId("boardLista");
       const tasks = filteredTasks();
 
       if (!tasks.length) {
@@ -1302,68 +1719,68 @@
         return;
       }
 
-      box.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Título</th>
-              <th>Tipo</th>
-              <th>Status</th>
-              <th>Prioridade</th>
-              <th>Risco</th>
-              <th>Área</th>
-              <th>Responsável</th>
-              <th>Prazo</th>
-              <th>Valor</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            ${tasks.map(t => {
-              const resp = findUser(t.responsavelId);
-              return `
-                <tr ondblclick="editTask('${escapeAttr(t.id)}')" style="cursor:pointer">
-                  <td style="font-family:monospace;font-size:11px;color:var(--text3)">${escapeHtml(t.codigo || "")}</td>
-                  <td style="font-weight:600;color:var(--text)">${escapeHtml(t.titulo)}</td>
-                  <td>${labelFrom(db.config.tipos, t.tipo)}</td>
-                  <td>${labelFrom(db.config.status, t.status)}</td>
-                  <td>${labelFrom(db.config.prioridades, t.prioridade)}</td>
-                  <td>${labelFrom(db.config.riscos, t.risco)}</td>
-                  <td>${labelFrom(db.config.areas, t.area)}</td>
-                  <td>${escapeHtml(resp?.nome || "—")}</td>
-                  <td class="${getPrazoClass(t.prazo)}">${formatDate(t.prazo) || "—"}</td>
-                  <td>${t.valor ? formatMoney(t.valor) : "—"}</td>
-                  <td><button class="btn btn-ghost btn-xs" onclick="editTask('${escapeAttr(t.id)}')">Abrir</button></td>
-                </tr>
-              `;
-            }).join("")}
-          </tbody>
-        </table>
-      `;
+      box.innerHTML = ''
+        + '<table>'
+        + '<thead><tr>'
+        + '<th>Código</th><th>Título</th><th>Tipo</th><th>Status</th><th>Prioridade</th><th>Risco</th><th>Área</th><th>Responsável</th><th>Prazo</th><th>Valor</th><th></th>'
+        + '</tr></thead>'
+        + '<tbody>'
+        + tasks.map(function (t) {
+          const resp = findUser(t.responsavelId);
+
+          return ''
+            + '<tr data-row-task="' + escapeAttr(t.id) + '" style="cursor:pointer">'
+            + '<td style="font-family:monospace;font-size:11px;color:var(--text3)">' + escapeHtml(t.codigo || "") + '</td>'
+            + '<td style="font-weight:700;color:var(--text)">' + escapeHtml(t.titulo) + '</td>'
+            + '<td>' + labelFrom(db.config.tipos, t.tipo) + '</td>'
+            + '<td>' + labelFrom(db.config.status, t.status) + '</td>'
+            + '<td>' + labelFrom(db.config.prioridades, t.prioridade) + '</td>'
+            + '<td>' + labelFrom(db.config.riscos, t.risco) + '</td>'
+            + '<td>' + labelFrom(db.config.areas, t.area) + '</td>'
+            + '<td>' + escapeHtml(resp ? resp.nome : "—") + '</td>'
+            + '<td class="' + getPrazoClass(t.prazo) + '">' + (formatDate(t.prazo) || "—") + '</td>'
+            + '<td>' + (t.valor ? formatMoney(t.valor) : "—") + '</td>'
+            + '<td><button class="btn btn-ghost btn-xs" data-edit-task="' + escapeAttr(t.id) + '">Abrir</button></td>'
+            + '</tr>';
+        }).join("")
+        + '</tbody>'
+        + '</table>';
+
+      document.querySelectorAll("[data-row-task]").forEach(function (row) {
+        row.addEventListener("dblclick", function () {
+          editTask(row.getAttribute("data-row-task"));
+        });
+      });
+
+      document.querySelectorAll("[data-edit-task]").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          editTask(btn.getAttribute("data-edit-task"));
+        });
+      });
     }
 
     function renderMetrics() {
       const today = new Date();
-      today.setHours(0,0,0,0);
+      today.setHours(0, 0, 0, 0);
 
-      const vencidas = db.tasks.filter(t => {
+      const vencidas = db.tasks.filter(function (t) {
         if (!t.prazo || t.status === "concluido") return false;
         return new Date(t.prazo + "T00:00:00") < today;
       }).length;
 
       setText("metricTotal", db.tasks.length);
       setText("metricPrazo", vencidas);
-      setText("metricCritico", db.tasks.filter(t => ["alto", "critico"].includes(t.risco)).length);
-      setText("metricConcluido", db.tasks.filter(t => t.status === "concluido").length);
+      setText("metricCritico", db.tasks.filter(function (t) { return ["alto", "critico"].includes(t.risco); }).length);
+      setText("metricConcluido", db.tasks.filter(function (t) { return t.status === "concluido"; }).length);
     }
 
     function renderUpcoming() {
-      const box = document.getElementById("upcomingList");
+      const box = byId("upcomingList");
 
       const items = db.tasks
-        .filter(t => t.prazo && t.status !== "concluido")
-        .sort((a, b) => new Date(a.prazo) - new Date(b.prazo))
+        .filter(function (t) { return t.prazo && t.status !== "concluido"; })
+        .sort(function (a, b) { return new Date(a.prazo) - new Date(b.prazo); })
         .slice(0, 7);
 
       if (!items.length) {
@@ -1371,23 +1788,31 @@
         return;
       }
 
-      box.innerHTML = items.map(t => `
-        <div class="user-row" style="cursor:pointer" onclick="editTask('${escapeAttr(t.id)}')">
-          <div class="user-info">
-            <div class="user-name">${escapeHtml(t.titulo)}</div>
-            <div class="user-meta ${getPrazoClass(t.prazo)}">⏱ ${formatDate(t.prazo)} · ${labelFrom(db.config.areas, t.area)}</div>
-          </div>
-        </div>
-      `).join("");
+      box.innerHTML = items.map(function (t) {
+        return ''
+          + '<div class="user-row" style="cursor:pointer" data-upcoming-task="' + escapeAttr(t.id) + '">'
+          + '<div class="user-info">'
+          + '<div class="user-name">' + escapeHtml(t.titulo) + '</div>'
+          + '<div class="user-meta ' + getPrazoClass(t.prazo) + '">⏱ ' + formatDate(t.prazo) + ' · ' + labelFrom(db.config.areas, t.area) + '</div>'
+          + '</div>'
+          + '</div>';
+      }).join("");
+
+      document.querySelectorAll("[data-upcoming-task]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          editTask(el.getAttribute("data-upcoming-task"));
+        });
+      });
     }
 
-    function switchView(view, btn) {
+    function switchView(view) {
       currentView = view;
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
 
-      document.getElementById("boardKanban").style.display = view === "kanban" ? "" : "none";
-      document.getElementById("boardLista").style.display = view === "lista" ? "" : "none";
+      byId("btnKanban").classList.toggle("active", view === "kanban");
+      byId("btnLista").classList.toggle("active", view === "lista");
+
+      byId("boardKanban").style.display = view === "kanban" ? "" : "none";
+      byId("boardLista").style.display = view === "lista" ? "" : "none";
     }
 
     function newTask() {
@@ -1398,12 +1823,12 @@
 
       clearTaskForm();
       setText("taskModalTitle", "Nova tarefa");
-      document.getElementById("deleteTaskBtn").style.display = "none";
+      byId("deleteTaskBtn").style.display = "none";
       openModal("taskModal");
     }
 
     function editTask(id) {
-      const t = db.tasks.find(x => x.id === id);
+      const t = db.tasks.find(function (x) { return x.id === id; });
       if (!t) return;
 
       setInputValue("taskId", t.id);
@@ -1424,14 +1849,13 @@
       setInputValue("taskParte", t.parte || "");
       setInputValue("taskLink", t.link || "");
 
-      checklistAtual = Array.isArray(t.checklist) ? structuredCloneSafe(t.checklist) : [];
+      checklistAtual = Array.isArray(t.checklist) ? clone(t.checklist) : [];
 
       renderChecklist();
       renderHistory(t);
 
       setText("taskModalTitle", "Editar tarefa");
-      document.getElementById("deleteTaskBtn").style.display = canEditTasks() ? "inline-flex" : "none";
-
+      byId("deleteTaskBtn").style.display = canEditTasks() ? "inline-flex" : "none";
       openModal("taskModal");
     }
 
@@ -1447,19 +1871,21 @@
         "taskParte",
         "taskLink",
         "checkInput"
-      ].forEach(id => setInputValue(id, ""));
+      ].forEach(function (id) {
+        setInputValue(id, "");
+      });
 
       setTextareaValue("taskDescricao", "");
-      setSelectValue("taskTipo", db.config.tipos[0]?.id || "");
-      setSelectValue("taskStatus", db.config.status[0]?.id || "");
-      setSelectValue("taskPrioridade", db.config.prioridades[0]?.id || "");
-      setSelectValue("taskArea", db.config.areas[0]?.id || "");
-      setSelectValue("taskRisco", db.config.riscos[0]?.id || "");
+      setSelectValue("taskTipo", db.config.tipos[0] ? db.config.tipos[0].id : "");
+      setSelectValue("taskStatus", db.config.status[0] ? db.config.status[0].id : "");
+      setSelectValue("taskPrioridade", db.config.prioridades[0] ? db.config.prioridades[0].id : "");
+      setSelectValue("taskArea", db.config.areas[0] ? db.config.areas[0].id : "");
+      setSelectValue("taskRisco", db.config.riscos[0] ? db.config.riscos[0].id : "");
       setSelectValue("taskResponsavel", "");
 
       checklistAtual = [];
       renderChecklist();
-      document.getElementById("historyBox").innerHTML = "Sem histórico.";
+      byId("historyBox").innerHTML = "Sem histórico.";
     }
 
     function saveTask() {
@@ -1499,15 +1925,15 @@
       }
 
       if (id) {
-        const index = db.tasks.findIndex(t => t.id === id);
-        if (index < 0) return;
+        const idx = db.tasks.findIndex(function (t) { return t.id === id; });
+        if (idx < 0) return;
 
-        const prev = db.tasks[index];
+        const prev = db.tasks[idx];
         const historico = Array.isArray(prev.historico) ? prev.historico : [];
 
         if (oldStatus && oldStatus !== newStatus) {
           historico.push({
-            msg: `Status: ${labelFrom(db.config.status, oldStatus)} → ${labelFrom(db.config.status, newStatus)}`,
+            msg: "Status: " + labelFrom(db.config.status, oldStatus) + " → " + labelFrom(db.config.status, newStatus),
             userId: currentUser.id,
             date: now()
           });
@@ -1516,28 +1942,23 @@
         if (oldResp !== newResp) {
           const resp = findUser(newResp);
           historico.push({
-            msg: `Responsável: ${resp?.nome || "Sem responsável"}`,
+            msg: "Responsável: " + (resp ? resp.nome : "Sem responsável"),
             userId: currentUser.id,
             date: now()
           });
         }
 
-        db.tasks[index] = {
-          ...prev,
-          ...payload,
-          historico
-        };
+        db.tasks[idx] = Object.assign({}, prev, payload, { historico: historico });
       } else {
-        db.tasks.unshift({
+        db.tasks.unshift(Object.assign({
           id: uid(),
           codigo: nextCode(),
-          ...payload,
           historico: [
             { msg: "Criado", userId: currentUser.id, date: now() }
           ],
           createdBy: currentUser.id,
           createdAt: now()
-        });
+        }, payload));
       }
 
       saveDb();
@@ -1557,7 +1978,7 @@
 
       if (!confirm("Excluir esta tarefa permanentemente?")) return;
 
-      db.tasks = db.tasks.filter(t => t.id !== id);
+      db.tasks = db.tasks.filter(function (t) { return t.id !== id; });
       saveDb();
       closeModal("taskModal");
       renderAll();
@@ -1565,7 +1986,7 @@
     }
 
     function renderHistory(t) {
-      const box = document.getElementById("historyBox");
+      const box = byId("historyBox");
       const hist = Array.isArray(t.historico) ? t.historico : [];
 
       if (!hist.length) {
@@ -1573,25 +1994,28 @@
         return;
       }
 
-      box.innerHTML = hist.slice().reverse().map(h => {
+      box.innerHTML = hist.slice().reverse().map(function (h) {
         const user = findUser(h.userId);
-        return `<div style="margin-bottom:6px">• ${escapeHtml(h.msg)} <span style="color:var(--text3)">por ${escapeHtml(user?.nome || "—")} em ${formatDateTime(h.date)}</span></div>`;
+        return '<div style="margin-bottom:6px">• ' + escapeHtml(h.msg) + ' <span style="color:var(--text3)">por ' + escapeHtml(user ? user.nome : "—") + ' em ' + formatDateTime(h.date) + '</span></div>';
       }).join("");
     }
 
     function addChecklistItem() {
-      const input = document.getElementById("checkInput");
+      const input = byId("checkInput");
       const text = input.value.trim();
 
       if (!text) return;
 
-      checklistAtual.push({ text, done: false });
+      checklistAtual.push({ text: text, done: false });
       input.value = "";
       renderChecklist();
     }
 
     function toggleChecklist(index) {
-      if (checklistAtual[index]) checklistAtual[index].done = !checklistAtual[index].done;
+      if (checklistAtual[index]) {
+        checklistAtual[index].done = !checklistAtual[index].done;
+      }
+
       renderChecklist();
     }
 
@@ -1601,20 +2025,33 @@
     }
 
     function renderChecklist() {
-      const box = document.getElementById("checklistBox");
+      const box = byId("checklistBox");
 
       if (!checklistAtual.length) {
         box.innerHTML = '<div class="empty" style="padding:16px">Nenhum item no checklist.</div>';
         return;
       }
 
-      box.innerHTML = checklistAtual.map((item, index) => `
-        <div class="check-item">
-          <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleChecklist(${index})" />
-          <span class="${item.done ? "done" : ""}">${escapeHtml(item.text)}</span>
-          <button type="button" class="btn btn-danger btn-xs" onclick="removeChecklist(${index})">✕</button>
-        </div>
-      `).join("");
+      box.innerHTML = checklistAtual.map(function (item, index) {
+        return ''
+          + '<div class="check-item">'
+          + '<input type="checkbox" ' + (item.done ? "checked" : "") + ' data-check-index="' + index + '" />'
+          + '<span class="' + (item.done ? "done" : "") + '">' + escapeHtml(item.text) + '</span>'
+          + '<button type="button" class="btn btn-danger btn-xs" data-remove-check="' + index + '">✕</button>'
+          + '</div>';
+      }).join("");
+
+      document.querySelectorAll("[data-check-index]").forEach(function (el) {
+        el.addEventListener("change", function () {
+          toggleChecklist(Number(el.getAttribute("data-check-index")));
+        });
+      });
+
+      document.querySelectorAll("[data-remove-check]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          removeChecklist(Number(el.getAttribute("data-remove-check")));
+        });
+      });
     }
 
     function dragCard(event, id) {
@@ -1630,6 +2067,7 @@
 
     function allowDrop(event) {
       if (!canEditTasks()) return;
+
       event.preventDefault();
       event.currentTarget.classList.add("drag-over");
     }
@@ -1645,29 +2083,30 @@
       event.currentTarget.classList.remove("drag-over");
 
       const newStatus = event.currentTarget.dataset.status;
-      const task = db.tasks.find(t => t.id === draggedId);
+      const task = db.tasks.find(function (t) { return t.id === draggedId; });
       draggedId = null;
 
       if (!task || !newStatus || task.status === newStatus) return;
 
       const oldStatus = task.status;
+
       task.status = newStatus;
       task.updatedBy = currentUser.id;
       task.updatedAt = now();
       task.historico = Array.isArray(task.historico) ? task.historico : [];
       task.historico.push({
-        msg: `Status: ${labelFrom(db.config.status, oldStatus)} → ${labelFrom(db.config.status, newStatus)}`,
+        msg: "Status: " + labelFrom(db.config.status, oldStatus) + " → " + labelFrom(db.config.status, newStatus),
         userId: currentUser.id,
         date: now()
       });
 
       saveDb();
       renderAll();
-      showToast(`Status alterado para ${labelFrom(db.config.status, newStatus)}.`);
+      showToast("Status alterado para " + labelFrom(db.config.status, newStatus) + ".");
     }
 
     function renderUsersGrid() {
-      const box = document.getElementById("usersGrid");
+      const box = byId("usersGrid");
       if (!box) return;
 
       if (!db.users.length) {
@@ -1675,29 +2114,43 @@
         return;
       }
 
-      box.innerHTML = db.users.map(u => {
-        const total = db.tasks.filter(t => t.responsavelId === u.id).length;
-        return `
-          <div class="user-row">
-            <span class="avatar" style="background:${escapeAttr(u.cor || "#4a80f5")};width:36px;height:36px;font-size:14px">${escapeHtml(initials(u.nome))}</span>
-            <div class="user-info">
-              <div class="user-name">${escapeHtml(u.nome)} ${u.ativo === false ? "· Inativo" : ""}</div>
-              <div class="user-meta">${escapeHtml(u.email)} · ${ROLE_LABEL[u.perfil] || u.perfil} · ${escapeHtml(u.cargo || "Sem cargo")} · ${total} tarefa(s)</div>
-            </div>
-            <button class="btn btn-ghost btn-xs" onclick="editUser('${escapeAttr(u.id)}')">Editar</button>
-            <button class="btn btn-danger btn-xs" onclick="deleteUser('${escapeAttr(u.id)}')">✕</button>
-          </div>
-        `;
+      box.innerHTML = db.users.map(function (u) {
+        const total = db.tasks.filter(function (t) { return t.responsavelId === u.id; }).length;
+
+        return ''
+          + '<div class="user-row">'
+          + '<span class="avatar" style="background:' + escapeAttr(u.cor || "#4a80f5") + ';width:36px;height:36px;font-size:14px">' + escapeHtml(initials(u.nome)) + '</span>'
+          + '<div class="user-info">'
+          + '<div class="user-name">' + escapeHtml(u.nome) + (u.ativo === false ? " · Inativo" : "") + '</div>'
+          + '<div class="user-meta">' + escapeHtml(u.email) + ' · ' + (ROLE_LABEL[u.perfil] || u.perfil) + ' · ' + escapeHtml(u.cargo || "Sem cargo") + ' · ' + total + ' tarefa(s)</div>'
+          + '</div>'
+          + '<button class="btn btn-ghost btn-xs" data-edit-user="' + escapeAttr(u.id) + '">Editar</button>'
+          + '<button class="btn btn-danger btn-xs" data-delete-user="' + escapeAttr(u.id) + '">✕</button>'
+          + '</div>';
       }).join("");
+
+      document.querySelectorAll("[data-edit-user]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          editUser(btn.getAttribute("data-edit-user"));
+        });
+      });
+
+      document.querySelectorAll("[data-delete-user]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          deleteUser(btn.getAttribute("data-delete-user"));
+        });
+      });
     }
 
     function clearUserForm() {
-      ["uId", "uNome", "uEmail", "uPassword", "uCargo"].forEach(id => setInputValue(id, ""));
+      ["uId", "uNome", "uEmail", "uPassword", "uCargo"].forEach(function (id) {
+        setInputValue(id, "");
+      });
+
       setSelectValue("uPerfil", "usuario");
       setSelectValue("uAtivo", "true");
       setSelectValue("uAlertas", "true");
-      const cor = document.getElementById("uCor");
-      if (cor) cor.value = "#4a80f5";
+      byId("uCor").value = "#4a80f5";
     }
 
     function editUser(id) {
@@ -1712,9 +2165,7 @@
       setSelectValue("uPerfil", u.perfil || "usuario");
       setSelectValue("uAtivo", String(u.ativo !== false));
       setSelectValue("uAlertas", String(u.alertas !== false));
-
-      const cor = document.getElementById("uCor");
-      if (cor) cor.value = u.cor || "#4a80f5";
+      byId("uCor").value = u.cor || "#4a80f5";
     }
 
     function saveUser() {
@@ -1726,53 +2177,51 @@
       const id = getInputValue("uId");
       const nome = getInputValue("uNome").trim();
       const email = getInputValue("uEmail").trim().toLowerCase();
-      const password = getInputValue("uPassword");
+      const pass = getInputValue("uPassword");
 
       if (!nome || !email) {
         showToast("Informe nome e e-mail.", "error");
         return;
       }
 
-      const duplicate = db.users.some(u => u.email.toLowerCase() === email && u.id !== id);
-      if (duplicate) {
+      if (db.users.some(function (u) { return String(u.email).toLowerCase() === email && u.id !== id; })) {
         showToast("Já existe usuário com este e-mail.", "error");
         return;
       }
 
-      if (!id && !password) {
-        showToast("Informe uma senha para novo usuário.", "error");
+      if (!id && !pass) {
+        showToast("Informe senha para novo usuário.", "error");
         return;
       }
 
       const payload = {
-        nome,
-        email,
+        nome: nome,
+        email: email,
         cargo: getInputValue("uCargo").trim(),
-        perfil: getSelectValue("uPerfil") || "usuario",
-        cor: document.getElementById("uCor").value || "#4a80f5",
+        perfil: getSelectValue("uPerfil"),
+        cor: byId("uCor").value || "#4a80f5",
         ativo: getSelectValue("uAtivo") === "true",
-        alertas: getSelectValue("uAlertas") === "true"
+        alertas: getSelectValue("uAlertas") === "true",
+        updatedAt: now()
       };
 
       if (id) {
-        const index = db.users.findIndex(u => u.id === id);
-        if (index < 0) return;
+        const idx = db.users.findIndex(function (u) { return u.id === id; });
+        if (idx < 0) return;
 
-        db.users[index] = {
-          ...db.users[index],
-          ...payload,
-          ...(password ? { password } : {}),
-          updatedAt: now()
-        };
+        if (pass) payload.password = pass;
 
-        if (currentUser.id === id) currentUser = db.users[index];
+        db.users[idx] = Object.assign({}, db.users[idx], payload);
+
+        if (currentUser.id === id) {
+          currentUser = db.users[idx];
+        }
       } else {
-        db.users.push({
+        db.users.push(Object.assign({
           id: uid(),
-          ...payload,
-          password,
+          password: pass,
           createdAt: now()
-        });
+        }, payload));
       }
 
       saveDb();
@@ -1782,24 +2231,24 @@
     }
 
     function deleteUser(id) {
-      if (!canManageUsers()) {
-        showToast("Seu perfil não permite excluir usuários.", "error");
-        return;
-      }
+      if (!canManageUsers()) return;
 
       if (id === currentUser.id) {
-        showToast("Você não pode excluir seu próprio usuário logado.", "error");
+        showToast("Você não pode excluir o próprio usuário logado.", "error");
         return;
       }
 
-      const user = findUser(id);
-      if (!user) return;
+      const u = findUser(id);
+      if (!u) return;
 
-      if (!confirm(`Excluir o usuário ${user.nome}? As tarefas ficarão sem responsável.`)) return;
+      if (!confirm("Excluir o usuário " + u.nome + "?")) return;
 
-      db.users = db.users.filter(u => u.id !== id);
-      db.tasks.forEach(t => {
-        if (t.responsavelId === id) t.responsavelId = "";
+      db.users = db.users.filter(function (x) { return x.id !== id; });
+
+      db.tasks.forEach(function (t) {
+        if (t.responsavelId === id) {
+          t.responsavelId = "";
+        }
       });
 
       saveDb();
@@ -1808,63 +2257,76 @@
     }
 
     function openModal(id) {
+      if (id === "adminModal" && !isAdmin()) {
+        showToast("Somente admin pode acessar configurações.", "error");
+        return;
+      }
+
+      if (id === "usersModal" && !canManageUsers()) {
+        showToast("Somente admin ou gestor pode acessar usuários.", "error");
+        return;
+      }
+
       if (id === "adminModal") {
-        if (!isAdmin()) {
-          showToast("Somente admin pode acessar configurações.", "error");
-          return;
-        }
         loadAdminForm();
       }
 
       if (id === "usersModal") {
-        if (!canManageUsers()) {
-          showToast("Somente admin ou gestor pode acessar usuários.", "error");
-          return;
-        }
         clearUserForm();
         renderUsersGrid();
       }
 
-      document.getElementById(id)?.classList.add("active");
+      byId(id).classList.add("active");
     }
 
     function closeModal(id) {
-      document.getElementById(id)?.classList.remove("active");
+      byId(id).classList.remove("active");
     }
 
     function loadAdminForm() {
       setInputValue("cfgAppName", db.config.appName);
       setInputValue("cfgSubtitle", db.config.appSubtitle);
-      renderConfigEditor("tipos", "cfgTiposBox");
-      renderConfigEditor("areas", "cfgAreasBox");
+
+      renderConfigEditor("tipos", "cfgTiposBox", false);
+      renderConfigEditor("areas", "cfgAreasBox", false);
       renderConfigEditor("status", "cfgStatusBox", true);
-      renderConfigEditor("prioridades", "cfgPrioridadesBox");
-      renderConfigEditor("riscos", "cfgRiscosBox");
+      renderConfigEditor("prioridades", "cfgPrioridadesBox", false);
+      renderConfigEditor("riscos", "cfgRiscosBox", false);
     }
 
-    function renderConfigEditor(key, boxId, withColor = false) {
-      const box = document.getElementById(boxId);
+    function renderConfigEditor(key, boxId, withColor) {
+      const box = byId(boxId);
       const list = db.config[key] || [];
 
-      box.innerHTML = list.map((item, index) => `
-        <div class="config-line ${withColor ? "status-line" : ""}">
-          <input value="${escapeAttr(item.id)}" placeholder="id" onchange="updateConfigItem('${key}', ${index}, 'id', this.value)" />
-          <input value="${escapeAttr(item.label)}" placeholder="rótulo" onchange="updateConfigItem('${key}', ${index}, 'label', this.value)" />
-          ${withColor ? `<input type="color" value="${escapeAttr(item.color || "#556080")}" onchange="updateConfigItem('${key}', ${index}, 'color', this.value)" />` : ""}
-          <button class="btn btn-secondary btn-xs" onclick="moveConfigItem('${key}', ${index}, -1)">↑</button>
-          <button class="btn btn-danger btn-xs" onclick="removeConfigItem('${key}', ${index})">✕</button>
-        </div>
-      `).join("");
+      box.innerHTML = list.map(function (item, i) {
+        return ''
+          + '<div class="config-row ' + (!withColor ? "no-color" : "") + '">'
+          + '<input value="' + escapeAttr(item.id) + '" data-config-field="' + key + '|' + i + '|id">'
+          + '<input value="' + escapeAttr(item.label) + '" data-config-field="' + key + '|' + i + '|label">'
+          + (withColor ? '<input type="color" value="' + escapeAttr(item.color || "#556080") + '" data-config-field="' + key + '|' + i + '|color">' : "")
+          + '<button class="btn btn-danger btn-xs" data-remove-config="' + key + '|' + i + '">✕</button>'
+          + '</div>';
+      }).join("");
+
+      document.querySelectorAll("[data-config-field]").forEach(function (el) {
+        el.addEventListener("input", function () {
+          const p = el.getAttribute("data-config-field").split("|");
+          updateConfigItem(p[0], Number(p[1]), p[2], el.value);
+        });
+      });
+
+      document.querySelectorAll("[data-remove-config]").forEach(function (el) {
+        el.addEventListener("click", function () {
+          const p = el.getAttribute("data-remove-config").split("|");
+          removeConfigItem(p[0], Number(p[1]));
+        });
+      });
     }
 
     function updateConfigItem(key, index, field, value) {
       if (!db.config[key] || !db.config[key][index]) return;
 
-      if (field === "id") {
-        value = slugify(value);
-      }
-
-      db.config[key][index][field] = value;
+      db.config[key][index][field] = field === "id" ? slugify(value) : value;
     }
 
     function addConfigItem(key) {
@@ -1884,7 +2346,7 @@
 
     function removeConfigItem(key, index) {
       if ((db.config[key] || []).length <= 1) {
-        showToast("É necessário manter pelo menos um item.", "error");
+        showToast("Mantenha pelo menos um item.", "error");
         return;
       }
 
@@ -1892,44 +2354,25 @@
       loadAdminForm();
     }
 
-    function moveConfigItem(key, index, direction) {
-      const list = db.config[key];
-      const next = index + direction;
-
-      if (!list || next < 0 || next >= list.length) return;
-
-      [list[index], list[next]] = [list[next], list[index]];
-      loadAdminForm();
-    }
-
     function saveAdminConfig() {
-      if (!isAdmin()) {
-        showToast("Somente admin pode salvar configurações.", "error");
-        return;
-      }
-
       db.config.appName = getInputValue("cfgAppName").trim() || "LexBoard";
       db.config.appSubtitle = getInputValue("cfgSubtitle").trim() || "Gestão Jurídica Inteligente";
-
       db.config = normalizeConfig(db.config);
-      saveDb();
 
+      saveDb();
       closeModal("adminModal");
       renderAll();
       showToast("Configurações salvas.");
     }
 
     function resetSystem() {
-      if (!isAdmin()) return;
-
-      const ok = confirm("Resetar todo o sistema? Isso apagará usuários, tarefas e configurações locais.");
-      if (!ok) return;
+      if (!confirm("Resetar tudo? Isso apagará usuários, tarefas e configurações deste navegador.")) return;
 
       localStorage.removeItem(STORAGE_KEY);
       loadDb();
       closeModal("adminModal");
       showLogin();
-      showToast("Sistema resetado. Use o login admin inicial.", "info");
+      showToast("Sistema resetado.", "info");
     }
 
     function clearFilters() {
@@ -1943,26 +2386,29 @@
 
     function nextCode() {
       const year = new Date().getFullYear();
-      const count = db.tasks.filter(t => String(t.codigo || "").startsWith(`JUR-${year}-`)).length + 1;
-      return `JUR-${year}-${String(count).padStart(4, "0")}`;
+      const count = db.tasks.filter(function (t) {
+        return String(t.codigo || "").indexOf("JUR-" + year + "-") === 0;
+      }).length + 1;
+
+      return "JUR-" + year + "-" + String(count).padStart(4, "0");
     }
 
     function findUser(id) {
-      return db.users.find(u => u.id === id);
+      return db.users.find(function (u) { return u.id === id; });
     }
 
     function labelFrom(list, id) {
-      return (list || []).find(x => x.id === id)?.label || id || "—";
+      const item = (list || []).find(function (x) { return x.id === id; });
+      return escapeHtml(item ? item.label : (id || "—"));
     }
 
     function getPrazoClass(date) {
       if (!date) return "";
 
       const today = new Date();
-      today.setHours(0,0,0,0);
+      today.setHours(0, 0, 0, 0);
 
-      const due = new Date(date + "T00:00:00");
-      const diff = Math.ceil((due - today) / 86400000);
+      const diff = Math.ceil((new Date(date + "T00:00:00") - today) / 86400000);
 
       if (diff < 0) return "overdue";
       if (diff <= 2) return "due-soon";
@@ -1970,8 +2416,7 @@
     }
 
     function uid() {
-      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-      return "id-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+      return "id_" + Date.now() + "_" + Math.random().toString(16).slice(2);
     }
 
     function now() {
@@ -1990,17 +2435,16 @@
 
     function formatDate(date) {
       if (!date) return "";
-      const [y, m, d] = date.split("-");
-      return `${d}/${m}/${y}`;
+
+      const p = date.split("-");
+      return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : date;
     }
 
     function formatDateTime(value) {
-      if (!value) return "—";
-
       try {
         return new Date(value).toLocaleString("pt-BR");
-      } catch {
-        return value;
+      } catch (e) {
+        return value || "—";
       }
     }
 
@@ -2015,7 +2459,7 @@
       return String(name || "?")
         .split(" ")
         .filter(Boolean)
-        .map(w => w[0])
+        .map(function (w) { return w[0]; })
         .slice(0, 2)
         .join("")
         .toUpperCase() || "?";
@@ -2031,18 +2475,24 @@
         .replace(/^_+|_+$/g, "") || "item";
     }
 
-    function structuredCloneSafe(obj) {
+    function clone(obj) {
       return JSON.parse(JSON.stringify(obj));
     }
 
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
     function escapeHtml(v) {
-      return String(v ?? "").replace(/[&<>"']/g, c => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[c]));
+      return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[c];
+      });
     }
 
     function escapeAttr(v) {
@@ -2050,53 +2500,56 @@
     }
 
     function getInputValue(id) {
-      const el = document.getElementById(id);
-      return el ? el.value || "" : "";
+      const el = byId(id);
+      return el ? (el.value || "") : "";
     }
 
     function getTextareaValue(id) {
-      const el = document.getElementById(id);
-      return el ? el.value || "" : "";
+      const el = byId(id);
+      return el ? (el.value || "") : "";
     }
 
     function getSelectValue(id) {
-      const el = document.getElementById(id);
-      return el ? el.value || "" : "";
+      const el = byId(id);
+      return el ? (el.value || "") : "";
     }
 
     function setInputValue(id, value) {
-      const el = document.getElementById(id);
+      const el = byId(id);
       if (el) el.value = value == null ? "" : value;
     }
 
     function setTextareaValue(id, value) {
-      const el = document.getElementById(id);
+      const el = byId(id);
       if (el) el.value = value == null ? "" : value;
     }
 
     function setSelectValue(id, value) {
-      const el = document.getElementById(id);
+      const el = byId(id);
       if (el) el.value = value == null ? "" : value;
     }
 
     function setText(id, value) {
-      const el = document.getElementById(id);
+      const el = byId(id);
       if (el) el.textContent = value == null ? "" : value;
     }
 
-    function showToast(msg, type = "success") {
-      const el = document.getElementById("toast");
-      const icon = document.getElementById("toastIcon");
-      const msgEl = document.getElementById("toastMsg");
+    function showToast(msg, type) {
+      type = type || "success";
 
-      if (!el || !icon || !msgEl) return;
+      const el = byId("toast");
+      const icon = byId("toastIcon");
+      const text = byId("toastMsg");
 
       el.style.borderColor = type === "error" ? "var(--red)" : type === "info" ? "var(--blue)" : "var(--green)";
       icon.textContent = type === "error" ? "✗" : type === "info" ? "ℹ" : "✓";
-      msgEl.textContent = msg;
+      text.textContent = msg;
 
       el.classList.add("show");
-      setTimeout(() => el.classList.remove("show"), 3500);
+
+      setTimeout(function () {
+        el.classList.remove("show");
+      }, 3500);
     }
   </script>
 </body>
